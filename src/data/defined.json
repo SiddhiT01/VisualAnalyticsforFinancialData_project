@@ -1,0 +1,122 @@
+[
+  {
+    "symbol": "DE",
+    "from": "2021-12-02",
+    "until": "2022-04-20",
+    "answer": "up"
+  },
+  {
+    "symbol": "U",
+    "from": "2022-01-25",
+    "until": "2023-01-12",
+    "answer": "down"
+  },
+  {
+    "symbol": "LDOS",
+    "from": "2022-10-26",
+    "until": "2023-08-02",
+    "answer": "down"
+  },
+  {
+    "symbol": "GOOGL",
+    "from": "2022-07-28",
+    "until": "2023-03-01",
+    "answer": "down"
+  },
+  {
+    "symbol": "AAPL",
+    "from": "2022-07-28",
+    "until": "2023-03-15",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "ALL",
+    "from": "2022-07-28",
+    "until": "2023-03-03",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "AAPL",
+    "from": "2022-10-11",
+    "until": "2023-02-17",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "AAPL",
+    "from": "2022-03-21",
+    "until": "2022-07-07",
+    "answer": "down"
+  },
+  {
+    "symbol": "SONY",
+    "from": "2023-01-10",
+    "until": "2023-03-31",
+    "answer": "up"
+  },
+  {
+    "symbol": "EA",
+    "from": "2022-03-22",
+    "until": "2022-06-08",
+    "answer": "up"
+  },
+  {
+    "symbol": "EA",
+    "from": "2022-06-25",
+    "until": "2022-09-05",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "EA",
+    "from": "2021-12-28",
+    "until": "2022-05-12",
+    "answer": "down"
+  },
+  {
+    "symbol": "MRO",
+    "from": "2022-01-23",
+    "until": "2023-06-27",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "MRO",
+    "from": "2021-07-07",
+    "until": "2021-09-25",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "LDOS",
+    "from": "2021-11-18",
+    "until": "2022-04-28",
+    "answer": "up"
+  },
+  {
+    "symbol": "AMP",
+    "from": "2022-09-15",
+    "until": "2023-03-03",
+    "answer": "up"
+  },
+  {
+    "symbol": "AMP",
+    "from": "2021-11-24",
+    "until": "2022-04-20",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "TSN",
+    "from": "2022-01-01",
+    "until": "2022-12-31",
+    "answer": "down"
+  },
+  {
+    "symbol": "DE",
+    "from": "2022-06-24",
+    "until": "2023-02-23",
+    "answer": "up"
+  },
+  {
+    "symbol": "KR",
+    "from": "2022-06-30",
+    "until": "2023-02-27",
+    "answer": "down"
+  }
+]

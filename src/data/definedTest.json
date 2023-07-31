@@ -1,0 +1,38 @@
+[
+  {
+    "symbol": "OTIS",
+    "from": "2021-10-19",
+    "until": "2023-04-03",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "GOOGL",
+    "from": "2022-09-18",
+    "until": "2023-03-15",
+    "answer": "down"
+  },
+  {
+    "symbol": "OTIS",
+    "from": "2022-11-11",
+    "until": "2023-03-08",
+    "answer": "up"
+  },
+  {
+    "symbol": "AAP",
+    "from": "2022-04-06",
+    "until": "2023-03-31",
+    "answer": "down"
+  },
+  {
+    "symbol": "PRU",
+    "from": "2022-05-23",
+    "until": "2023-01-30",
+    "answer": "notrend"
+  },
+  {
+    "symbol": "PRU",
+    "from": "2021-01-29",
+    "until": "2021-06-04",
+    "answer": "up"
+  }
+]
