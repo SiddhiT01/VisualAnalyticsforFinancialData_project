@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-
+import outputs from "../../data/outputs.json";
 class ScatterPlot extends Component {
     constructor(props) {
         super(props);
     
         this.state = {
           selectedXAxis: "sma(25)",
-          selectedYAxis: "gas",
+          selectedYAxis: "open",
           rsi:80
         };
     
@@ -15,46 +15,44 @@ class ScatterPlot extends Component {
         {"name":"sma(25)","startangle":5.4,"endangle":5,"color":"#9F6F2E","axis":'y'},
         {"name":"sma(125)","startangle":5,"endangle":4.6,"color":"#1E5B56","axis":'y'},
         {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
-        {"name":"steering","startangle":3.8,"endangle":3.4,"color":" #9F2E2E","axis":'x'},
-        {"name":"gas","startangle":3.4,"endangle":3,"color":"#2E8540","axis":'x'},
-        {"name":"brake","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
+        {"name":"open","startangle":3.8,"endangle":3.4,"color":" #9F2E2E","axis":'x'},
+        {"name":"close","startangle":3.4,"endangle":3,"color":"#2E8540","axis":'x'},
+        {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
     ];
-       
-        this.data=[{
+       this.data=outputs["A"]
+        //this.data=[{
             // "side": "left",
-             "sma(25)": 1956,
-             "sma(125)": 3683.6965,
-             "ema": 2.3829,
-             "steering":20,
-             "gas":2500,
-             "brake":250,
-             "rsi":50
-             
+        //      "sma(25)": 1956,
+        //      "sma(125)": 3683.6965,
+        //      "ema": 2.3829,
+        //      "open":20,
+        //      "close":2500,
+        //      "high":250,
+        //      "rsi":30     
      
-           },
-           {
-            // "side": "right",
-             "sma(25)": 1957,
-             "sma(125)": 3722.7648,
-             "ema": 2.4026,
-             "brake":10,
-             "gas":2500,       
-             "steering":20,
-             "rsi":100
-           },
-           {
-             // "side": "right",
-              "sma(25)": 1960,
-              "sma(125)": 3726.7648,
-              "ema": 2.4026,
-              "brake":25,
-              "gas":2500,         
-              "steering":20,
-              "rsi":25
-            }     
-     
-         ];
+        //    },
+        //    {
+        //     // "side": "right",
+        //      "sma(25)": 1957,
+        //      "sma(125)": 3722.7648,
+        //      "ema": 2.4026,
+        //      "open":10,
+        //      "close":2500,       
+        //      "high":20,
+        //      "rsi":50
+        //    },
+        //    {
+        //      // "side": "right",
+        //       "sma(25)": 1960,
+        //       "sma(125)": 3726.7648,
+        //       "ema": 2.4026,
+        //       "open":25,
+        //       "close":2500,         
+        //       "high":20,
+        //       "rsi":80
+        //     }    
+        //  ];
         
      
       }
@@ -91,6 +89,10 @@ class ScatterPlot extends Component {
             endAngle: 6+(rsi/100)*2,
         });
     }
+    dragHandler = (event) => {
+        const rotation = event.x * 360 / this.svg.attr('width'); // Calculate rotation
+        this.svg.attr('transform', `rotate(${rotation})`);
+      }
 
   drawScatterPlot() {
     // Data
@@ -122,15 +124,17 @@ class ScatterPlot extends Component {
       .x(d => x(d[this.state.selectedXAxis]))
       .y(d => y(d[this.state.selectedYAxis]));
 
-    const svg = d3.select(this.chartRef)
+    this.svg = d3.select(this.chartRef)
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [-50,0,600,500])
-      .attr("style", "max-width: 100%; height: auto;padding: 30px;");
+      .attr("style", "max-width: 100%; height: auto;padding: 30px;")//.call(d3.drag().on('drag', this.dragHandler)); 
+      
+   
 
     const l = length(line(this.data));
 
-    svg.append("g")
+    this.svg.append("g")
       .attr("transform", `translate(0,${height - marginBottom})`)
       .call(d3.axisBottom(x).ticks(width / 80))
       .call(g => g.select(".domain").remove())
@@ -141,8 +145,8 @@ class ScatterPlot extends Component {
         .attr("text-anchor", "end")
         .attr("fill", "currentColor")
         .text(this.state.selectedXAxis));
-
-    svg.append("g")
+    
+    this.svg.append("g")
       .attr("transform", `translate(${marginLeft},0)`)
       .call(d3.axisLeft(y).ticks(width / 80))
       .call(g => g.select(".domain").remove())
@@ -152,11 +156,12 @@ class ScatterPlot extends Component {
         .attr("font-weight", "bold")
         .text(this.state.selectedYAxis));
 
-    svg.append("path")
+    this.svg.append("path")
       .datum(this.data)
       .attr("fill", "none")
       .attr("stroke", "black")
       .attr("stroke-width", 2.5)
+      .attr("r", 2.5)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("stroke-dasharray", `0,${l}`)
@@ -164,18 +169,18 @@ class ScatterPlot extends Component {
       .attr("stroke-dasharray", `${l},${l}`);
 
 
-    svg.append("path")
+    this.svg.append("path")
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateArc(circleRadius,8,6))
       .attr("transform", "translate(250,250)")
       .attr('fill', "black")    
 
-    var rsi_path=svg.append("path")
+    var rsi_path=this.svg.append("path")
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,this.state.rsi))
       .attr("transform", "translate(250,250)")
       .attr('fill',this.state.rsi>=70?"green":"red")
-    svg.append("g")
+    this.svg.append("g")
       .attr("fill", "white")
       .attr("stroke", "black")
       .attr("stroke-width", 2)
@@ -185,7 +190,7 @@ class ScatterPlot extends Component {
       .join("circle")
       .attr("cx", d => x(d[this.state.selectedXAxis]))
       .attr("cy", d => y(d[this.state.selectedYAxis]))
-      .attr("r", 3)
+      .attr("r", 1)
       .on('mouseover', (event,d) => { 
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
@@ -195,7 +200,7 @@ class ScatterPlot extends Component {
         });
        
   
-    svg.append('circle')
+    this.svg.append('circle')
         .attr('cx', circleX)
         .attr('cy', circleY)
         .attr('r', circleRadius)
@@ -205,7 +210,7 @@ class ScatterPlot extends Component {
   
     // Add buttons as arcs on the right and bottom side of the circle
    
-    svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
+    this.svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
         .attr("id", d=>  "button_"+d.name )       
         .attr('d',(d) => this.generateArc(circleRadius, d.startangle, d.endangle))
         .attr("transform", "translate(250,250)")
@@ -221,7 +226,7 @@ class ScatterPlot extends Component {
 
 
     //button labels
-    svg.selectAll('button_lables').data(this.xAxisOptions).enter().append("text").attr('dy', '-.5em').append("textPath")
+   this.svg.selectAll('button_lables').data(this.xAxisOptions).enter().append("text").attr('dy', '-.5em').append("textPath")
     .join("textPath")
     .attr("xlink:href",  d=>  "#button_"+d.name ) //place the ID of the path here
     .style("text-anchor","middle") //place the text halfway on the arc
@@ -233,7 +238,9 @@ class ScatterPlot extends Component {
     // Adjust the value to move the label down
     .on('click',(event,d) => this.handleAxisChange(d.name,d.axis));
 
+  
 
+   
 
 
     }

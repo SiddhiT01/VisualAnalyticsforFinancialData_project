@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsBoost from 'highcharts/modules/boost';
-
+import outputs from "../../data/outputs.json";
 HighchartsBoost(Highcharts);
 
 const BaseChart = ({ options, data }) => {
