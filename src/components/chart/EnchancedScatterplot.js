@@ -109,7 +109,7 @@ class ScatterPlot extends Component {
      d3.select(this.chartRef).selectAll('*').remove();
    
    
-    calculateTotalLength  = (path) => d3.create("svg:path").attr("d", path).node().getTotalLength()
+     const calculateTotalLength  = (path) => d3.create("svg:path").attr("d", path).node().getTotalLength()
     // Positional encodings
     const x = d3.scaleLinear()
       .domain(d3.extent(this.data, d => d[this.state.selectedXAxis])).nice()
