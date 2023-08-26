@@ -13,7 +13,7 @@ import {useState} from "react";
 import Prompt from "../components/Prompt";
 import experimentDataJson from "../data/experimentData.json";
 import {useStopwatch} from "react-timer-hook";
-
+import outputs from "../data/outputs.json";
 const Experiment = () => {
   const [user] = useAuthState(auth);
   const [value, loading] = useDocument(doc(db, 'users', user.uid))
@@ -36,12 +36,12 @@ const Experiment = () => {
 
   const userReadyStatus = true;//value?.data()?.ready;
   const userFinishStatus = false;//value?.data()?.finished;
-  const experimentOrder = ["enchanced_scatterplot"];//["scatterplot","timeline","extended"];//value?.data()?.scatterplotExperimentOrder;
+  const experimentOrder = ["enchanced_scatterplot","scatterplot"];//value?.data()?.scatterplotExperimentOrder;
   const handleExperimentDataChange = ({key, data}) => {
     if (!firstChartClickTime) {
       setFirstChartClickTime({ hours, minutes, seconds });
     }
-
+    
     const newData = {...experimentData[key], ...data};
 
     setExperimentData({
@@ -77,16 +77,12 @@ const Experiment = () => {
     }
 
     // Extended Scatterplot Experiment
-    if (currentExperiment === 2) {
+    if (experimentOrder[currentExperiment] === "extended") {
       result.extendedAmount = Object.values(experimentData).filter((data) => data.clicked).length;
     }
 
-    // await updateUser({
-    //   uid: user.uid,
-    //   [`result.${experimentOrder[currentExperiment]}`]: result,
-    // });
+    
 
-    console.log(result);
 
     await goToNextExperiment();
   }
@@ -121,7 +117,7 @@ const Experiment = () => {
   }
 
   const predictionsMade = Object.keys(experimentData).filter((key) => experimentData[key].prediction !== undefined).length;
-  const submissionValid = predictionsMade === experimentDataJson.dataAmount;
+  const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:outputs.length);
 
   if (loading || submitting) {
     return (
@@ -161,7 +157,7 @@ const Experiment = () => {
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"} width={"100%"} my={"2em"} sx={{ flexDirection: "column"}}>
         {!submissionValid &&
           <Typography variant={"caption"} color={"error"} paragraph>
-            {predictionsMade} / {experimentDataJson.dataAmount} trends have been selected.
+            {predictionsMade} /  {(experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:outputs.length)} trends have been selected.
           </Typography>
         }
         <Button

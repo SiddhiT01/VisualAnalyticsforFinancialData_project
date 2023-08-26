@@ -1,35 +1,12 @@
 import {Box, Typography} from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
-import experimentData from "../../data/experimentData.json";
+import outputs from "../../data/outputs.json";
 import ExperimentInfoBox from "./ExperimentInfoBox";
 
 const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
-  const sharedAxisOptions = {
-    tickWidth: 0,
-    labels: {
-      enabled: false,
-    }
-  }
-
-  const chartOptions = {
-    chart: {
-      height: 125,
-      width: 125
-    },
-    xAxis: {
-      ...sharedAxisOptions,
-      title: {
-        text: experimentData.axis.scatterplot.x.name.toUpperCase() + ` (${experimentData.axis.scatterplot.x.resolution})`,
-      }
-    },
-    yAxis: {
-      ...sharedAxisOptions,
-      title: {
-        text: experimentData.axis.scatterplot.y.name.toUpperCase() + ` (${experimentData.axis.scatterplot.y.resolution})`,
-      }
-    }
-  }
+ 
+  
 
   const onTrendChange = (i, symbol, prediction, correct) => {
     const compositeKey = `${symbol}-${i}`;
@@ -41,7 +18,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
     <>
       <ExperimentInfoBox>
         <Typography gutterBottom variant={"h5"} align={"center"} fontWeight={"bold"}>Scatterplot Experiment
-          ({experimentData.dataAmount} Scatterplots)</Typography>
+          ( Scatterplots)</Typography>
         <Typography gutterBottom variant={"body1"} align={"center"}>Please select the trend that you think is most likely
           to be present in the scatterplot.</Typography>
         <Typography gutterBottom variant={"body1"} align={"center"}>
@@ -52,7 +29,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
         </Typography>
       </ExperimentInfoBox>
 
-      <Box bgcolor={isPaused ? "grey" : "white"}>
+      <Box bgcolor={isPaused ? "grey" : "white"}>        
         <Box
           sx={{
             display: 'flex',
@@ -63,15 +40,20 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
           }}
           visibility={isPaused ? "hidden" : "visible"}
         >
-        
+              
+          {outputs.map((obj,i) => {
+            return (
               <Box
                 sx={{p: 1, border: '1px dashed lightgrey', borderRadius: 1, margin: 0.5}}
-               
+                key={i}
               >
-                <EnchancedScatterplot />
-                
-              
+                <EnchancedScatterplot data={obj}/>
+                <TrendRadioPicker onChange={(newPrediction) => onTrendChange(obj.id, obj.name, newPrediction, obj.trend)}/>
+               
               </Box>
+            );
+          })} 
+      
            
         </Box>
       </Box>

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import outputs from "../../data/outputs.json";
 class ScatterPlot extends Component {
     constructor(props) {
         super(props);
     
         this.state = {
-          selectedXAxis: "sma(25)",
-          selectedYAxis: "open",
-          rsi:80
+          selectedXAxis: "open",
+          selectedYAxis: "sma(25)",
+          rsi:0
         };
     
         this.xAxisOptions = [
@@ -20,39 +19,9 @@ class ScatterPlot extends Component {
         {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
     ];
-       this.data=outputs["A"]
-        //this.data=[{
-            // "side": "left",
-        //      "sma(25)": 1956,
-        //      "sma(125)": 3683.6965,
-        //      "ema": 2.3829,
-        //      "open":20,
-        //      "close":2500,
-        //      "high":250,
-        //      "rsi":30     
+       this.data=props["data"]["data"]
+      
      
-        //    },
-        //    {
-        //     // "side": "right",
-        //      "sma(25)": 1957,
-        //      "sma(125)": 3722.7648,
-        //      "ema": 2.4026,
-        //      "open":10,
-        //      "close":2500,       
-        //      "high":20,
-        //      "rsi":50
-        //    },
-        //    {
-        //      // "side": "right",
-        //       "sma(25)": 1960,
-        //       "sma(125)": 3726.7648,
-        //       "ema": 2.4026,
-        //       "open":25,
-        //       "close":2500,         
-        //       "high":20,
-        //       "rsi":80
-        //     }    
-        //  ];
         
      
       }
@@ -73,15 +42,16 @@ class ScatterPlot extends Component {
 
 
 
-  generateArc(circleRadius, startAngle, endAngle) {
+  generateArc(circleRadius, startAngle, endAngle, button_name) {        
         return d3.arc()({
             innerRadius: circleRadius,
-            outerRadius: circleRadius + 30,
+            outerRadius: circleRadius + ([this.state.selectedXAxis,this.state.selectedYAxis].includes(button_name)?35:30),
             startAngle: startAngle,
             endAngle: endAngle,
         });
     }
-    generateRSIArc(circleRadius,rsi){
+    generateRSIArc(circleRadius,rsi,date){
+      console.log(date)
         return d3.arc()({
             innerRadius: circleRadius,
             outerRadius: circleRadius + 30,
@@ -160,7 +130,7 @@ class ScatterPlot extends Component {
       .datum(this.data)
       .attr("fill", "none")
       .attr("stroke", "black")
-      .attr("stroke-width", 2.5)
+      .attr("stroke-width", 1)
       .attr("r", 2.5)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
@@ -177,7 +147,7 @@ class ScatterPlot extends Component {
 
     var rsi_path=this.svg.append("path")
       .attr("id", "arc_rsi" )       
-      .attr('d', this.generateRSIArc(circleRadius,this.state.rsi))
+      .attr('d', this.generateRSIArc(circleRadius,this.state.rsi,0))
       .attr("transform", "translate(250,250)")
       .attr('fill',this.state.rsi>=70?"green":"red")
     this.svg.append("g")
@@ -194,7 +164,7 @@ class ScatterPlot extends Component {
       .on('mouseover', (event,d) => { 
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
-        .attr('d', this.generateRSIArc(circleRadius,d.rsi))
+        .attr('d', this.generateRSIArc(circleRadius,d.rsi,d.date))
         .attr('fill',d.rsi>=70?"green":"red")
       
         });
@@ -212,7 +182,7 @@ class ScatterPlot extends Component {
    
     this.svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
         .attr("id", d=>  "button_"+d.name )       
-        .attr('d',(d) => this.generateArc(circleRadius, d.startangle, d.endangle))
+        .attr('d',(d) => this.generateArc(circleRadius, d.startangle, d.endangle,d.name))
         .attr("transform", "translate(250,250)")
         .attr('fill', d=> d.color)
         .attr('stroke', 'white')
@@ -230,7 +200,7 @@ class ScatterPlot extends Component {
     .join("textPath")
     .attr("xlink:href",  d=>  "#button_"+d.name ) //place the ID of the path here
     .style("text-anchor","middle") //place the text halfway on the arc
-    .attr("startOffset", "23%")    
+    .attr("startOffset", "20%")    
     .attr('fill', 'white')
     .attr('font-size', '20px')    
     .text( d=>  d.name)

@@ -33,7 +33,8 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
 
   const onTrendChange = (i, symbol, prediction, correct) => {
     const compositeKey = `${symbol}-${i}`;
-
+    console.log(i);
+    console.log(symbol)
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
 
