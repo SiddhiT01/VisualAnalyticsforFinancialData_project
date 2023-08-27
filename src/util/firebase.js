@@ -5,12 +5,12 @@ import {doc, getFirestore, updateDoc} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDkqzrsOEUrCqKAXnJVZt33KsfKHaLBxc8",
-  authDomain: "userstudy-dissertation.firebaseapp.com",
-  projectId: "userstudy-dissertation",
-  storageBucket: "userstudy-dissertation.appspot.com",
-  messagingSenderId: "756526932550",
-  appId: "1:756526932550:web:4876ad542aa89afceae047"
+  apiKey: "AIzaSyApYUphwYsaxgYIZkufcm9Z8W8bbzSR1vI",//
+  authDomain: "vizproject-7703a.firebaseapp.comm", //
+  projectId: "vizproject-7703a",//
+  storageBucket: "vizproject-7703a.appspot.com",
+  messagingSenderId: "294788256803", //
+  appId: "1:294788256803:web:e846a75a362ed00b558d96",
 };
 
 // Initialize Firebase

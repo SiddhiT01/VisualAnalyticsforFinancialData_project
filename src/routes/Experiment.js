@@ -14,6 +14,7 @@ import Prompt from "../components/Prompt";
 import experimentDataJson from "../data/experimentData.json";
 import {useStopwatch} from "react-timer-hook";
 import outputs from "../data/outputs.json";
+
 const Experiment = () => {
   const [user] = useAuthState(auth);
   const [value, loading] = useDocument(doc(db, 'users', user.uid))
@@ -33,10 +34,11 @@ const Experiment = () => {
     pause,
     reset
   } = useStopwatch({autoStart: false});
+ 
+  const userReadyStatus = value?.data()?.ready;
+  const userFinishStatus = value?.data()?.finished;
+  const experimentOrder = value?.data()?.scatterplotExperimentOrder;
 
-  const userReadyStatus = true;//value?.data()?.ready;
-  const userFinishStatus = false;//value?.data()?.finished;
-  const experimentOrder = ["enchanced_scatterplot","scatterplot"];//value?.data()?.scatterplotExperimentOrder;
   const handleExperimentDataChange = ({key, data}) => {
     if (!firstChartClickTime) {
       setFirstChartClickTime({ hours, minutes, seconds });
@@ -81,7 +83,10 @@ const Experiment = () => {
       result.extendedAmount = Object.values(experimentData).filter((data) => data.clicked).length;
     }
 
-    
+    await updateUser({
+      uid: user.uid,
+      [`result.${experimentOrder[currentExperiment]}`]: result,
+    });
 
 
     await goToNextExperiment();
@@ -115,16 +120,13 @@ const Experiment = () => {
         return <Typography>Invalid experiment</Typography>;
     }
   }
-
-  const predictionsMade = Object.keys(experimentData).filter((key) => experimentData[key].prediction !== undefined).length;
-  const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:outputs.length);
-
   if (loading || submitting) {
     return (
       <CircularProgress/>
     );
   }
-
+console.log(loading)
+console.log(value)
   if (!userReadyStatus) {
     return (
       <Typography my={5} variant={"h5"} align={"center"}>
@@ -132,6 +134,10 @@ const Experiment = () => {
       </Typography>
     );
   }
+
+  const predictionsMade = Object.keys(experimentData).filter((key) => experimentData[key].prediction !== undefined).length;
+  const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:outputs.length);
+
 
   if (finished || userFinishStatus) {
     return (
