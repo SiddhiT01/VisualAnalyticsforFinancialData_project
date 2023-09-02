@@ -125,8 +125,7 @@ const Experiment = () => {
       <CircularProgress/>
     );
   }
-console.log(loading)
-console.log(value)
+
   if (!userReadyStatus) {
     return (
       <Typography my={5} variant={"h5"} align={"center"}>
