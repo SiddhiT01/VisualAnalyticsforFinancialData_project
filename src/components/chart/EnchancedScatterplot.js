@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
+import Color from "colorjs.io";
 class ScatterPlot extends Component {
     constructor(props) {
         super(props);
@@ -41,19 +42,28 @@ class ScatterPlot extends Component {
 
 
 
-  generateArc(circleRadius, startAngle, endAngle, button_name) {        
-        return d3.arc()({
-            innerRadius: circleRadius,
-            outerRadius: circleRadius + ([this.state.selectedXAxis,this.state.selectedYAxis].includes(button_name)?35:30),
-            startAngle: startAngle,
-            endAngle: endAngle,
-        });
+  generateButtonArc(circleRadius, startAngle, endAngle, button_name) {  
+    
+    const arc=d3.arc()
+    .innerRadius( circleRadius)
+    .outerRadius(circleRadius + ([this.state.selectedXAxis,this.state.selectedYAxis].includes(button_name)?35:30))
+    .startAngle(startAngle)
+    .endAngle(endAngle).cornerRadius(5);
+    return arc()
+
     }
-    generateRSIArc(circleRadius,rsi,date){
- 
+    generateRSIArc(circleRadius,rsi){
+      if(rsi=='-'){
+        return d3.arc()({
+          innerRadius: circleRadius,
+          outerRadius: circleRadius-15,
+          startAngle: 8,
+          endAngle: 6,
+      });
+      }
         return d3.arc()({
             innerRadius: circleRadius,
-            outerRadius: circleRadius + 30,
+            outerRadius: circleRadius-15,
             startAngle: 6,
             endAngle: 6+(rsi/100)*2,
         });
@@ -142,15 +152,14 @@ class ScatterPlot extends Component {
   var clip = this.svg.append("defs").append("SVG:clipPath")
   .attr("id", "clip")
   .append("SVG:rect")
-  .attr("width", scatter_width )
-  .attr("height", scatter_height )
+  .attr("width", scatter_width)
+  .attr("height", scatter_height)
   .attr("x", scatter_x)
   .attr("y", scatter_y);
   const zoom=d3.zoom()
   .scaleExtent([1, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
-  //.translateExtent([[0, 0], [width, height]])
-  //.extent([[marginLeft, marginRight], [width-marginLeft, height-marginRight]])
   .on("zoom",zoomed);  
+
   this.svg.append("rect")
   .attr("width", scatter_width)
   .attr("height", scatter_height)
@@ -162,31 +171,60 @@ class ScatterPlot extends Component {
   var scatter = this.svg.append('g')
   .attr("clip-path", "url(#clip)")
 
+
+  this.svg.append("linearGradient")
+  .attr("id", "line-gradient")
+  .attr("gradientUnits", "userSpaceOnUse")  
+  .selectAll("stop")
+  .data([
+      {offset: "0%", color: "#FF3131"},
+      {offset: "100%", color: "#08FF08"}
+    ])
+  .enter().append("stop")
+  .attr("offset", d => d.offset )
+  .attr("stop-color", d => d.color);
+
+  // let beginningColor = new Color("p3", [1, 0, 0]);
+  // let endColor = new Color("p3", [0, 1, 0]);
+
+  // let gradient = beginningColor.range(endColor, {
+  //   space: "lch",
+  //   outputSpace: "srgb"
+  // });
+
+  // for (let i = 1; i < this.data.length - 1; i++) {
+    
+  //     const color = gradient(i / (this.data.length - 1)).toString();
+
+  //     this.data[i]['color'] ="red"
+  //   //console.log(this.data[i])
+  // }
+
     var gLine=scatter.append("path")
       .datum(this.data)
       .attr("fill", "none")
-      .attr("stroke", "black")
-      .attr("stroke-width", 1)
-      .attr("r", 2.5)
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-linecap", "round")
-      .attr("stroke-dasharray", `0,${l}`)
+      .attr("stroke", "url(#line-gradient)" )      
+      .attr("stroke-width", 3)
       .attr("d", line)
-      .attr("stroke-dasharray", `${l},${l}`);
+      
      
      
     this.svg.append("path")
       .attr("id", "arc_rsi" )       
-      .attr('d', this.generateArc(circleRadius,8,6))
+      .attr('d', this.generateRSIArc(circleRadius,"-"))
       .attr("transform", "translate(250,250)")
       .attr('fill', "black")    
 
     var rsi_path=this.svg.append("path")
       .attr("id", "arc_rsi" )       
-      .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi'],this.data[0]['date']))
+      .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi']))
       .attr("transform", "translate(250,250)")
       .attr('fill',this.data[0]['rsi']>=70?"green":"red")
+
+    
+    
       
+
     var gDot=scatter.append("g")
       .attr("fill", "white")
       .attr("stroke", "black")
@@ -219,10 +257,10 @@ class ScatterPlot extends Component {
    
     this.svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
         .attr("id", d=>  "button_"+d.name )       
-        .attr('d',(d) => this.generateArc(circleRadius, d.startangle, d.endangle,d.name))
+        .attr('d',(d) => this.generateButtonArc(circleRadius, d.startangle, d.endangle,d.name))
         .attr("transform", "translate(250,250)")
         .attr('fill', d=> d.color)
-        .attr('stroke', 'white')
+        .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .style("cursor", "pointer")
         .attr('class', 'arc-button')
@@ -250,7 +288,7 @@ class ScatterPlot extends Component {
       
       var zx = transform.rescaleX(x).interpolate(d3.interpolateRound);
       var zy = transform.rescaleY(y).interpolate(d3.interpolateRound);    
-      gLine.attr("transform", transform).attr("stroke-width", 1 / transform.k);     
+      gLine.attr("transform", transform).attr("stroke-width", 2 / transform.k);     
       xAxis.call(d3.axisBottom(zx));      
       yAxis.call(d3.axisLeft(zy));
       gDot

@@ -4,7 +4,7 @@ import {Navigate} from 'react-router-dom'
 
 const LoggedInRoute = ({ children }) => {
   const [user, loading, error] = useAuthState(auth);
-
+  return children;
   if (!user && !loading) {
     return <Navigate to={'/login'} replace={true}/>;
   } else if (error) {

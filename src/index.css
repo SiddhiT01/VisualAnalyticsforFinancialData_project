@@ -15,9 +15,14 @@ code {
 /* Glow effect */
 .arc-button {
   transition: fill 0.3s ease;
+  
+  
+  
 }
 .arc-button:hover {
   animation: glowing 1.5s infinite;
+  
+  
 }
 @keyframes glowing {
   0% {
