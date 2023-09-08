@@ -17,7 +17,7 @@ import outputs from "../data/outputs.json";
 
 const Experiment = () => {
   const [user] = useAuthState(auth);
-  const [value, loading] = useDocument(doc(db, 'users',"3YEi5olmnchKKrpS3C4hYxLgIqE3"))
+  const [value, loading] = useDocument(doc(db, 'users', user.uid))
   const [submitting, setSubmitting] = useState(false);
 
   const [currentExperiment, setCurrentExperiment] = useState(0);

@@ -10,13 +10,13 @@ export const getFormattedTimeseriesForCompany = (companyInfo) => {
   const indicatorOneData = [];
   const indicatorTwoData = [];
 
-  companyInfo.data.price.forEach((dataPoint) => {
+  companyInfo.close.forEach((dataPoint) => {
     priceData.push({
       x: new Date(dataPoint[1]),
       y: dataPoint[0]
     });
   });
-
+  console.log(priceData)
   companyInfo.data.indicatorOne.forEach((dataPoint) => {
     indicatorOneData.push({
       x: new Date(dataPoint[1]),
@@ -48,6 +48,62 @@ export const getFormattedTimeseriesForCompany = (companyInfo) => {
       name: experimentData.axis.scatterplot.y.name.toUpperCase() + ` (${experimentData.axis.scatterplot.y.resolution})`,
       data: indicatorTwoData,
       color: "#7300ff",
+      showInLegend: true,
+    }];
+}
+
+export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
+  const priceData = [];
+  const indicatorOneData = [];
+  const indicatorTwoData = [];
+  const indicatorThreeData=[]
+  dataInfo.forEach((dataPoint) => {
+    var dateString=dataPoint.date
+    var dateParts = dateString.split("/"); 
+    var date=new Date(dateParts[2], dateParts[1] - 1, dateParts[0])
+    priceData.push({
+      x: date,
+      y: dataPoint['close']
+    });
+
+    indicatorOneData.push({
+      x: date,
+      y: dataPoint['sma(125)']
+    });
+  
+    indicatorTwoData.push({
+      x: date,
+      y: dataPoint['sma(25)']
+    });
+    indicatorThreeData.push({
+      x: date,
+      y: dataPoint['ema']
+    });
+  });
+console.log(indicatorOneData)
+  return [
+    {
+      name: "Price",
+      data: priceData,
+      color: "#5db2ee",
+      showInLegend: true,
+    },
+    {
+      name: 'SMA(125)',
+      data: indicatorOneData,
+      color: "#f68d3f",
+      showInLegend: true,
+    },
+    {
+      name: 'SMA(25)',
+      data: indicatorTwoData,
+      color: "#7300ff",
+      showInLegend: true,
+    },
+    {
+      name: 'EMA',
+      data: indicatorThreeData,
+      color: "red",
       showInLegend: true,
     }];
 }
