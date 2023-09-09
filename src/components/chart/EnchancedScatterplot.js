@@ -11,30 +11,30 @@ class ScatterPlot extends Component {
         };
     
         this.xAxisOptions = [
-        {"name":"sma(25)","startangle":5.4,"endangle":5,"color":"#9F6F2E","axis":'y'},
-        {"name":"ema","startangle":5,"endangle":4.6,"color":"#1E5B56","axis":'y'},
+        {"name":"sma(25)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y'},
+        {"name":"ema","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y'},
        // {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
-        {"name":"sma(125)","startangle":3.8,"endangle":3.4,"color":" #9F2E2E","axis":'x'},
-        {"name":"close","startangle":3.4,"endangle":3,"color":"#2E8540","axis":'x'},
+        {"name":"sma(125)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
+        {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x'},
        // {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
     ];
        this.data=props["data"]["data"]
-      let beginningColor = new Color("p3", [0, 1, 0]);
-      let endColor = new Color("p3", [1, 0, 0]);
+      // let beginningColor = new Color("p3", [0, 1, 0]);
+      // let endColor = new Color("p3", [1, 0, 0]);
 
-      let gradient = beginningColor.range(endColor, {
-        space: "lch",
-        outputSpace: "srgb"
-      });
+      // let gradient = beginningColor.range(endColor, {
+      //   space: "lch",
+      //   outputSpace: "srgb"
+      // });
 
-      for (let i = 0; i < this.data.length ; i++) {
+      // for (let i = 0; i < this.data.length ; i++) {
        
-          const color = gradient(i / (this.data.length )).toString();
-         // console.log(gradient(i / (this.data.length )))
-          this.data[i].color = color
+      //     const color = gradient(i / (this.data.length )).toString();
+      //    // console.log(gradient(i / (this.data.length )))
+      //     this.data[i].color = color
         
-      }
+      // }
        this.onChartClick=props['onChartClick']
        this.i=props['i']
        this.id=props['id']
@@ -66,7 +66,7 @@ class ScatterPlot extends Component {
     
     const arc=d3.arc()
     .innerRadius( circleRadius)
-    .outerRadius(circleRadius + ([this.state.selectedXAxis,this.state.selectedYAxis].includes(button_name)?35:30))
+    .outerRadius(circleRadius + ([this.state.selectedXAxis,this.state.selectedYAxis].includes(button_name)?40:30))
     .startAngle(startAngle)
     .endAngle(endAngle).cornerRadius(5);
     return arc()
@@ -191,23 +191,6 @@ class ScatterPlot extends Component {
   var scatter = this.svg.append('g')
   .attr("clip-path", "url(#clip)")
 
-
-  // this.svg.append("linearGradient")
-  // .attr("id", "line-gradient")
-  // .attr("gradientUnits", "userSpaceOnUse")  
-  // .selectAll("stop")
-  // .data(this.data)
-  // .enter().append("stop")
-  // .attr("offset", d => x(d[this.state.selectedXAxis]))
-  // .attr("stop-color", d => d.color);
-
-  // var gLine = this.svg.selectAll("myLines")
-  //     .data(this.data)
-  //     .join("path")
-  //       .attr("d", d => line(d))
-  //       .attr("stroke", d => d.color)
-  //       .style("stroke-width", 4)
-  //       .style("fill", "none")
    
     
     var gLine=scatter.append("path")
@@ -265,7 +248,7 @@ class ScatterPlot extends Component {
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
         .attr('fill',d.rsi>=70?"red":"green")
-        console.log(d.rsi)
+       // console.log(d.rsi)
         tooltip.text(d.date); return tooltip.style("visibility", "visible");
 
        

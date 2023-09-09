@@ -80,30 +80,34 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
       y: dataPoint['ema']
     });
   });
-console.log(indicatorOneData)
+
   return [
     {
       name: "Price",
       data: priceData,
       color: "#5db2ee",
-      showInLegend: true,
+      showInLegend: true ,     
+     turboThreshold :0
     },
     {
       name: 'SMA(125)',
       data: indicatorOneData,
       color: "#f68d3f",
       showInLegend: true,
+      turboThreshold :0
     },
     {
       name: 'SMA(25)',
       data: indicatorTwoData,
       color: "#7300ff",
       showInLegend: true,
+      turboThreshold :0
     },
     {
       name: 'EMA',
       data: indicatorThreeData,
       color: "red",
       showInLegend: true,
+      turboThreshold :0
     }];
 }

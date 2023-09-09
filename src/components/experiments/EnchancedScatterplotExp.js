@@ -18,16 +18,18 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
   const onChartClick = (i, id, symbol) => {
+   // console.log('inside')
     onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
 
     setOpen(true);
    
     const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[i].data);
-
+    console.log(series)
     setModalData({
       chartOptions: {
         series,
         showInLegend: true,
+        
       }
     });
   }
