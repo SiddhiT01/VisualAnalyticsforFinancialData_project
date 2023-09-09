@@ -98,8 +98,8 @@ class ScatterPlot extends Component {
 
     // Data
      // Chart dimensions and margins
-     const width = 200;
-     const height = 200;
+     const width = 400;
+     const height = 400;
 
 
      const scatter_x=100;
@@ -122,7 +122,7 @@ class ScatterPlot extends Component {
 
     var y = d3.scaleLinear()
       .domain(d3.extent(this.data, d => d[this.state.selectedYAxis])).nice()
-      .range([scatter_y+25, scatter_height]);
+      .range([scatter_height,scatter_y+25]);
 
     var line = d3.line()
       .x(d => x(d[this.state.selectedXAxis]))
@@ -243,7 +243,10 @@ class ScatterPlot extends Component {
       .attr("cy", d => y(d[this.state.selectedYAxis]))
       .attr("r", 1)
       .on('mouseover', (event,d) => { 
-        console.log(d.color)
+        console.log(d['sma(25)'])
+        console.log(d['sma(125)'])
+        //console.log(d['date'])
+
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
