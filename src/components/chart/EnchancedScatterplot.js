@@ -6,7 +6,7 @@ class ScatterPlot extends Component {
         super(props);
     
         this.state = {
-          selectedXAxis: "open",
+          selectedXAxis: "sma(125)",
           selectedYAxis: "sma(25)"         
         };
     
@@ -20,8 +20,8 @@ class ScatterPlot extends Component {
     
     ];
        this.data=props["data"]["data"]
-      let beginningColor = new Color("p3", [1, 0, 0]);
-      let endColor = new Color("p3", [0, 1, 0]);
+      let beginningColor = new Color("p3", [0, 1, 0]);
+      let endColor = new Color("p3", [1, 0, 0]);
 
       let gradient = beginningColor.range(endColor, {
         space: "lch",
@@ -126,7 +126,6 @@ class ScatterPlot extends Component {
       .range([height - marginBottom, marginTop]);
 
     var line = d3.line()
-      .curve(d3.curveCatmullRom)
       .x(d => x(d[this.state.selectedXAxis]))
       .y(d => y(d[this.state.selectedYAxis]));
 
@@ -141,7 +140,7 @@ class ScatterPlot extends Component {
   
       
 
-    const l = calculateTotalLength(line(this.data));
+   const l = calculateTotalLength(line(this.data));
    
     var xAxis=this.svg.append("g")
       .attr("transform", `translate(0,${height - marginBottom})`)
@@ -194,37 +193,33 @@ class ScatterPlot extends Component {
   .attr("clip-path", "url(#clip)")
 
 
-  this.svg.append("linearGradient")
-  .attr("id", "line-gradient")
-  .attr("gradientUnits", "userSpaceOnUse")  
-  .selectAll("stop")
-  .data(this.data)
-  .enter().append("stop")
-  .attr("offset", d => x(d[this.state.selectedXAxis]))
-  .attr("stop-color", d => d.color);
+  // this.svg.append("linearGradient")
+  // .attr("id", "line-gradient")
+  // .attr("gradientUnits", "userSpaceOnUse")  
+  // .selectAll("stop")
+  // .data(this.data)
+  // .enter().append("stop")
+  // .attr("offset", d => x(d[this.state.selectedXAxis]))
+  // .attr("stop-color", d => d.color);
 
-  // let beginningColor = new Color("p3", [1, 0, 0]);
-  // let endColor = new Color("p3", [0, 1, 0]);
-
-  // let gradient = beginningColor.range(endColor, {
-  //   space: "lch",
-  //   outputSpace: "srgb"
-  // });
-
-  // for (let i = 1; i < this.data.length - 1; i++) {
+  // var gLine = this.svg.selectAll("myLines")
+  //     .data(this.data)
+  //     .join("path")
+  //       .attr("d", d => line(d))
+  //       .attr("stroke", d => d.color)
+  //       .style("stroke-width", 4)
+  //       .style("fill", "none")
+   
     
-  //     const color = gradient(i / (this.data.length - 1)).toString();
-
-  //     this.data[i]['color'] ="red"
-  //   //console.log(this.data[i])
-  // }
-
     var gLine=scatter.append("path")
       .datum(this.data)
       .attr("fill", "none")
-      .attr("stroke", "url(#line-gradient)" )      
+      .attr("stroke", "orange" )      
       .attr("stroke-width", 3)
-      .attr("d", line)
+      .attr("d", d3.line()
+      .x(d => x(d[this.state.selectedXAxis]))
+      .y(d => y(d[this.state.selectedYAxis]))
+      )
       
      
      
@@ -241,28 +236,47 @@ class ScatterPlot extends Component {
       .attr('fill',this.data[0]['rsi']>=70?"green":"red")
 
     
-    
+      var tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px");
       
 
     var gDot=scatter.append("g")
       .attr("fill", "white")
-      .attr("stroke", "black")
+      
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
       .selectAll("circle")
       .data(this.data)
       .join("circle")
+      .attr("stroke",  d => d.color)
       .attr("cx", d => x(d[this.state.selectedXAxis]))
       .attr("cy", d => y(d[this.state.selectedYAxis]))
       .attr("r", 1)
       .on('mouseover', (event,d) => { 
-        console.log(d.color)
+        console.log(d.date)
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
         .attr('fill',d.rsi>=70?"green":"red")
+
+        tooltip.text(d.date); return tooltip.style("visibility", "visible");
+
+        // tooltip
+        // .html("The exact value of<br>the Ground Living area is: " + d.date)
+        // .style("left", (event.x)/2 + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+        // .style("top", (event.y)/2 + "px")
       
         })
+        .on("mousemove", function(event){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
         .on("click",(event,d)=> this.onChartClick(this.i, this.id, d.name));
        
   
