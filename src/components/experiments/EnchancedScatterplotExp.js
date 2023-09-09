@@ -1,7 +1,7 @@
 import {Box, Modal,Typography} from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
-import outputs from "../../data/outputs.json";
+import enhancedCSPData from "../../data/enhancedCSPData.json";
 import ExperimentInfoBox from "./ExperimentInfoBox";
 import Timeseries from "../chart/Timeseries";
 import {getFormattedTimeseriesForExtScatter} from "../../util/util";
@@ -22,7 +22,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
 
     setOpen(true);
    
-    const series = getFormattedTimeseriesForExtScatter(outputs[i].data);
+    const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[i].data);
 
     setModalData({
       chartOptions: {
@@ -58,7 +58,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
           visibility={isPaused ? "hidden" : "visible"}
         >
               
-          {outputs.map((obj,i) => {
+          {enhancedCSPData.map((obj,i) => {
             return (
               <Box
                 sx={{p: 1, border: '1px dashed lightgrey', borderRadius: 1, margin: 0.5}}

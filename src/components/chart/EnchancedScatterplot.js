@@ -98,19 +98,18 @@ class ScatterPlot extends Component {
 
     // Data
      // Chart dimensions and margins
-     const width = 500;
-     const height = 500;
-     const marginTop = 120;
-     const marginRight = 120;
-     const marginBottom = 120;
-     const marginLeft = 120;
-     const circleRadius = 220;
-     const circleX = width / 2;
-     const circleY = height / 2;
-     const scatter_x=135;
-     const scatter_y=120;
-     const scatter_width=250;
-     const scatter_height=250;
+     const width = 200;
+     const height = 200;
+
+
+     const scatter_x=100;
+     const scatter_y=100;
+     const scatter_width=300;
+     const scatter_height=300;
+     const circleRadius = 200;
+     const circleX = 250;
+     const circleY = 250;
+    
      d3.select(this.chartRef).selectAll('*').remove();
      
    
@@ -119,11 +118,11 @@ class ScatterPlot extends Component {
     // Positional encodings
     var x = d3.scaleLinear()
       .domain(d3.extent(this.data, d => d[this.state.selectedXAxis])).nice()
-      .range([marginLeft, width - marginRight]);
+      .range([scatter_x+25, scatter_width ]);
 
     var y = d3.scaleLinear()
       .domain(d3.extent(this.data, d => d[this.state.selectedYAxis])).nice()
-      .range([height - marginBottom, marginTop]);
+      .range([scatter_y+25, scatter_height]);
 
     var line = d3.line()
       .x(d => x(d[this.state.selectedXAxis]))
@@ -133,8 +132,8 @@ class ScatterPlot extends Component {
     this.svg = d3.select(this.chartRef)
       .attr("width", width)
       .attr("height", height)
-      .attr("viewBox", [-50,0,600,500])
-      .attr("style", "max-width: 100%; height: auto;padding: 30px;")//.call(d3.drag().on('drag', this.dragHandler)); 
+      .attr("viewBox", [0,0,500,500])
+      .attr("style", "max-width: 100%; height: auto;")//.call(d3.drag().on('drag', this.dragHandler)); 
      
     
   
@@ -143,11 +142,11 @@ class ScatterPlot extends Component {
    const l = calculateTotalLength(line(this.data));
    
     var xAxis=this.svg.append("g")
-      .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80))
+      .attr("transform", `translate(50,${scatter_height + 100})`)
+      .call(d3.axisBottom(x).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
       .call(g => g.append("text")
-        .attr("x", width -85)
+        .attr("x",  scatter_width )
         .attr("y", 4)
         .attr("font-weight", "bold")
         .attr("text-anchor", "end")
@@ -155,12 +154,12 @@ class ScatterPlot extends Component {
         .text(this.state.selectedXAxis));
     
     var yAxis=this.svg.append("g")
-      .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(width / 80))
+      .attr("transform", `translate(${scatter_height-200},50)`)
+      .call(d3.axisLeft(y).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
       .call(g => g.select(".tick:last-of-type text").clone()
         .attr("x", 4)
-        .attr("y", -10)
+        .attr("y", scatter_height)
         .attr("text-anchor", "start")
         .attr("font-weight", "bold")
         .text(this.state.selectedYAxis));
@@ -171,10 +170,10 @@ class ScatterPlot extends Component {
   var clip = this.svg.append("defs").append("SVG:clipPath")
   .attr("id", "clip")
   .append("SVG:rect")
-  .attr("width", scatter_width)
-  .attr("height", scatter_height)
-  .attr("x", scatter_x)
-  .attr("y", scatter_y);
+  .attr("width", scatter_width-10)
+  .attr("height", scatter_height-10)
+  .attr("x", 110)
+  .attr("y", 110);
 
 
   const zoom=d3.zoom()
@@ -261,18 +260,15 @@ class ScatterPlot extends Component {
       .attr("cy", d => y(d[this.state.selectedYAxis]))
       .attr("r", 1)
       .on('mouseover', (event,d) => { 
-        console.log(d.date)
+        console.log(d.color)
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
-        .attr('fill',d.rsi>=70?"green":"red")
-
+        .attr('fill',d.rsi>=70?"red":"green")
+        console.log(d.rsi)
         tooltip.text(d.date); return tooltip.style("visibility", "visible");
 
-        // tooltip
-        // .html("The exact value of<br>the Ground Living area is: " + d.date)
-        // .style("left", (event.x)/2 + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-        // .style("top", (event.y)/2 + "px")
+       
       
         })
         .on("mousemove", function(event){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
