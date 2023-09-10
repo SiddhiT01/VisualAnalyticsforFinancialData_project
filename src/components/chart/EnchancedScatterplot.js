@@ -6,7 +6,7 @@ class ScatterPlot extends Component {
         super(props);
     
         this.state = {
-          selectedXAxis: "sma(125)",
+          selectedXAxis: "sma(100)",
           selectedYAxis: "sma(25)"         
         };
     
@@ -14,7 +14,7 @@ class ScatterPlot extends Component {
         {"name":"sma(25)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y'},
         {"name":"ema","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y'},
        // {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
-        {"name":"sma(125)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
+        {"name":"sma(100)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
         {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x'},
        // {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
@@ -97,9 +97,9 @@ class ScatterPlot extends Component {
   drawScatterPlot() {
 
     // Data
-     // Chart dimensions and margins
-     const width = 400;
-     const height = 400;
+     // Chart dimensions. Change this to adjust the dimentions of chart
+     const width = 160;
+     const height = 160;
 
 
      const scatter_x=100;
@@ -133,51 +133,48 @@ class ScatterPlot extends Component {
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0,0,500,500])
-      .attr("style", "max-width: 100%; height: auto;")//.call(d3.drag().on('drag', this.dragHandler)); 
-     
-    
+      .attr("style", "max-width: 100%; height: auto;")   
   
       
 
-   const l = calculateTotalLength(line(this.data));
+   //const l = calculateTotalLength(line(this.data));
    
     var xAxis=this.svg.append("g")
       .attr("transform", `translate(50,${scatter_height + 100})`)
       .call(d3.axisBottom(x).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
-      .call(g => g.append("text")
-        .attr("x",  scatter_width )
-        .attr("y", 4)
-        .attr("font-weight", "bold")
-        .attr("text-anchor", "end")
-        .attr("fill", "currentColor")
-        .text(this.state.selectedXAxis));
+      // .call(g => g.append("text")
+      //   .attr("x",  scatter_width )
+      //   .attr("y", 4)
+      //   .attr("font-weight", "bold")
+      //   .attr("text-anchor", "end")
+      //   .attr("fill", "currentColor")
+      //   .text(this.state.selectedXAxis));
     
     var yAxis=this.svg.append("g")
       .attr("transform", `translate(${scatter_height-200},50)`)
       .call(d3.axisLeft(y).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
-      .call(g => g.select(".tick:last-of-type text").clone()
-        .attr("x", 4)
-        .attr("y", scatter_height)
-        .attr("text-anchor", "start")
-        .attr("font-weight", "bold")
-        .text(this.state.selectedYAxis));
+      // .call(g => g.select(".tick:last-of-type text").clone()
+      //   .attr("x", 4)
+      //   .attr("y", 4)
+      //   .attr("text-anchor", "start")
+      //   .attr("font-weight", "bold")
+      //   .text(this.state.selectedYAxis));
 
 
 
-     // Add a clipPath: everything out of this area won't be drawn.
-  var clip = this.svg.append("defs").append("SVG:clipPath")
-  .attr("id", "clip")
-  .append("SVG:rect")
-  .attr("width", scatter_width-10)
-  .attr("height", scatter_height-10)
-  .attr("x", 110)
-  .attr("y", 110);
+     // clipPath for the line and dot: everything out of this area won't be drawn.
+    this.svg.append("defs").append("SVG:clipPath")
+    .attr("id", "clip")
+    .append("SVG:rect")
+    .attr("width", scatter_width-10)
+    .attr("height", scatter_height-10)
+    .attr("x", 110)
+    .attr("y", 110);
 
 
-  const zoom=d3.zoom()
-  .scaleExtent([1, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+  const zoom=d3.zoom()// This control how much you can unzoom (x0.5) and zoom (x20)
   .on("zoom",zoomed);  
 
   this.svg.append("rect")
@@ -187,9 +184,11 @@ class ScatterPlot extends Component {
   .style("pointer-events", "all")
   .attr('transform', 'translate(' + scatter_x + ',' + scatter_y + ')')
   .call(zoom);
-// Create the scatter variable: where both the circles and the brush take place
+
+// the scatter variable: where both the dot and the line take place
   var scatter = this.svg.append('g')
   .attr("clip-path", "url(#clip)")
+  .on("click",(event,d)=> this.onChartClick(this.i, this.id, this.data[0].Name));
 
    
     
@@ -230,14 +229,13 @@ class ScatterPlot extends Component {
       .style("padding", "5px");
       
 
-    var gDot=scatter.append("g")
-      .attr("fill", "white")
-      
+    var gDot=scatter.append("g")        
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
       .selectAll("circle")
       .data(this.data)
       .join("circle")
+      .attr("fill",  d => d.color)  
       .attr("stroke",  d => d.color)
       .attr("cx", d => x(d[this.state.selectedXAxis]))
       .attr("cy", d => y(d[this.state.selectedYAxis]))
@@ -259,7 +257,6 @@ class ScatterPlot extends Component {
         })
         .on("mousemove", function(event){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-        .on("click",(event,d)=> this.onChartClick(this.i, this.id, d.name));
        
   
     this.svg.append('circle')
@@ -270,7 +267,7 @@ class ScatterPlot extends Component {
         .attr('stroke', 'black')
         .attr('stroke-width', 2);
   
-    // Add buttons as arcs on the right and bottom side of the circle
+    // indicator buttons as arcs on the left and bottom side of the circle
    
     this.svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
         .attr("id", d=>  "button_"+d.name )       
@@ -288,7 +285,7 @@ class ScatterPlot extends Component {
     
 
     //button labels
-   this.svg.selectAll('button_lables').data(this.xAxisOptions).enter().append("text").attr('dy', '-.5em').append("textPath")
+   this.svg.selectAll('button_lables').data(this.xAxisOptions).enter().append("text").attr('dy', '-.8em').append("textPath")
     .join("textPath")
     .attr("xlink:href",  d=>  "#button_"+d.name ) //place the ID of the path here
     .style("text-anchor","middle") //place the text halfway on the arc
@@ -314,8 +311,7 @@ class ScatterPlot extends Component {
     
     }
    
-   
-   // scatter.call(zoom).call(zoom.transform, d3.zoomIdentity);
+ 
 
     }
     

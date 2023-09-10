@@ -3,7 +3,7 @@ import TrendRadioPicker from "../components/experiments/TrendRadioPicker";
 import {useState} from "react";
 import ExperimentTimer from "../components/experiments/ExperimentTimer";
 import {useStopwatch} from "react-timer-hook";
-
+import ExperimentInfoBox from "../components/experiments/ExperimentInfoBox";
 const Home = () => {
   const [tooltipOpen, setTooltipOpen] = useState(true);
   const {
@@ -49,6 +49,7 @@ const Home = () => {
       <Typography fontSize={20} paragraph>
         Each experiment begins paused. You should unpause the timer when you are ready to start. If you want to take a break you can pause at any time.
       </Typography>
+       
       <Typography fontSize={20} paragraph>
         The experiment is not a race, take as much time as you need to make your predictions.
       </Typography>

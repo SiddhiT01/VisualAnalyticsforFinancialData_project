@@ -16,7 +16,7 @@ export const getFormattedTimeseriesForCompany = (companyInfo) => {
       y: dataPoint[0]
     });
   });
-  console.log(priceData)
+  
   companyInfo.data.indicatorOne.forEach((dataPoint) => {
     indicatorOneData.push({
       x: new Date(dataPoint[1]),
@@ -68,7 +68,7 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
 
     indicatorOneData.push({
       x: date,
-      y: dataPoint['sma(125)']
+      y: dataPoint['sma(100)']
     });
   
     indicatorTwoData.push({
@@ -90,7 +90,7 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
      turboThreshold :0
     },
     {
-      name: 'SMA(125)',
+      name: 'SMA(100)',
       data: indicatorOneData,
       color: "#f68d3f",
       showInLegend: true,

@@ -22,6 +22,7 @@ const StudyNavbar = () => {
             </Typography>
           </Link>
         </Toolbar>
+        
       </AppBar>
     </Box>
   )

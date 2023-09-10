@@ -151,9 +151,17 @@ const Experiment = () => {
       <Prompt when={true} message={"WARNING: Are you sure you want to leave the experiment?\n\nYour data will not be saved!"}/>
 
       <ExperimentTimer hours={hours} minutes={minutes} seconds={seconds} pause={pause} start={start} isRunning={isRunning} />
-      <Typography variant={"caption"} display={!isRunning ? "block" : "none"}>
-        The experiment is currently paused. Press the play button to start/continue the experiment.
+      <Typography gutterBottom variant={"body1"} align={"center"} display={isRunning ? "inline-flex" : "none"} style={{ marginLeft: "70px" }}>
+          A&nbsp;<Typography component={"span"} color={"red"}> red marker</Typography>&nbsp;means the start of the connected
+          scatterplot, a <Typography component={"span"} color={"lightgreen"}>&nbsp;green marker</Typography>&nbsp;means the end of
+          the
+          connected scatterplot. (<Typography component={"span"} color={"lightgreen"}>Green</Typography> = most recent)
       </Typography>
+      <Typography variant={"caption"} display={!isRunning ? "block" : "none"}>
+        <p>The experiment is currently paused. Press the play button to start/continue the experiment.</p>
+      </Typography>
+
+
 
       {experiment({
         isPaused: !isRunning,

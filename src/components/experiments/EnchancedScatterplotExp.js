@@ -2,7 +2,6 @@ import {Box, Modal,Typography} from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
 import enhancedCSPData from "../../data/enhancedCSPData.json";
-import ExperimentInfoBox from "./ExperimentInfoBox";
 import Timeseries from "../chart/Timeseries";
 import {getFormattedTimeseriesForExtScatter} from "../../util/util";
 import {useState} from "react";
@@ -18,13 +17,12 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
   const onChartClick = (i, id, symbol) => {
-   // console.log('inside')
+    console.log(symbol)
     onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
 
     setOpen(true);
    
     const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[i].data);
-    console.log(series)
     setModalData({
       chartOptions: {
         series,
@@ -35,19 +33,8 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
   }
   return (
     <>
-      <ExperimentInfoBox>
-        <Typography gutterBottom variant={"h5"} align={"center"} fontWeight={"bold"}>Scatterplot Experiment
-          ( Scatterplots)</Typography>
-        <Typography gutterBottom variant={"body1"} align={"center"}>Please select the trend that you think is most likely
-          to be present in the scatterplot.</Typography>
-        <Typography gutterBottom variant={"body1"} align={"center"}>
-          A <Typography component={"span"} color={"red"}>red marker</Typography> means the start of the connected
-          scatterplot, a <Typography component={"span"} color={"lightgreen"}>green marker</Typography> means the end of
-          the
-          connected scatterplot. (<Typography component={"span"} color={"lightgreen"}>Green</Typography> = most recent)
-        </Typography>
-      </ExperimentInfoBox>
-
+     
+       
       <Box bgcolor={isPaused ? "grey" : "white"}>        
         <Box
           sx={{
