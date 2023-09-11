@@ -146,24 +146,13 @@ class ScatterPlot extends Component {
       .attr("transform", `translate(50,${scatter_height + 100})`)
       .call(d3.axisBottom(x).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
-      // .call(g => g.append("text")
-      //   .attr("x",  scatter_width )
-      //   .attr("y", 4)
-      //   .attr("font-weight", "bold")
-      //   .attr("text-anchor", "end")
-      //   .attr("fill", "currentColor")
-      //   .text(this.state.selectedXAxis));
+     
     
     var yAxis=this.svg.append("g")
       .attr("transform", `translate(${scatter_height-200},50)`)
       .call(d3.axisLeft(y).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
-      // .call(g => g.select(".tick:last-of-type text").clone()
-      //   .attr("x", 4)
-      //   .attr("y", 4)
-      //   .attr("text-anchor", "start")
-      //   .attr("font-weight", "bold")
-      //   .text(this.state.selectedYAxis));
+      
 
 
 
@@ -261,7 +250,8 @@ class ScatterPlot extends Component {
         .attr('d', this.generateRSIArcRest(circleRadius,d.rsi))
         .attr('fill',d.rsi>=70?"red":"green")
        
-        tooltip.text(d.date); return tooltip.style("visibility", "visible");
+        tooltip.text(d.date); 
+        return tooltip.style("visibility", "visible");
 
        
       

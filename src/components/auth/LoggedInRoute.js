@@ -6,7 +6,7 @@ const LoggedInRoute = ({ children }) => {
   const [user, loading, error] = useAuthState(auth);
 
   if (!user && !loading) {
-    return <Navigate to={'/login'} replace={true}/>;
+    //return <Navigate to={'/login'} replace={true}/>;
   } else if (error) {
     return <div>Error: {error}</div>;
   } else if (loading) {
