@@ -10,7 +10,7 @@ export const getFormattedTimeseriesForCompany = (companyInfo) => {
   const indicatorOneData = [];
   const indicatorTwoData = [];
 
-  companyInfo.close.forEach((dataPoint) => {
+  companyInfo.data.price.forEach((dataPoint) => {
     priceData.push({
       x: new Date(dataPoint[1]),
       y: dataPoint[0]
