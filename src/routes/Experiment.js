@@ -16,7 +16,7 @@ import {useStopwatch} from "react-timer-hook";
 import enhancedCSPData from "../data/enhancedCSPData.json";
 
 const Experiment = () => {
-  //const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [value, loading] = useDocument(doc(db, 'users','3YEi5olmnchKKrpS3C4hYxLgIqE3'))
   const [submitting, setSubmitting] = useState(false);
 
