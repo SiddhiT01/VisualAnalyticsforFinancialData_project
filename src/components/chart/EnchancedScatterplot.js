@@ -77,8 +77,8 @@ class ScatterPlot extends Component {
         return d3.arc()({
           innerRadius: circleRadius,
           outerRadius: circleRadius-15,
-          startAngle: 8,
-          endAngle: 6,
+          startAngle: 6,
+          endAngle: 8,
       });
       }
         return d3.arc()({
@@ -88,11 +88,14 @@ class ScatterPlot extends Component {
             endAngle: 6+(rsi/100)*2,
         });
     }
-    dragHandler = (event) => {
-        const rotation = event.x * 360 / this.svg.attr('width'); // Calculate rotation
-        this.svg.attr('transform', `rotate(${rotation})`);
-      }
-
+    generateRSIArcRest(circleRadius,rsi){      
+        return d3.arc()({
+            innerRadius: circleRadius,
+            outerRadius: circleRadius-15,
+            startAngle: 6+(rsi/100)*2,
+            endAngle: 8,
+        });
+    }
      
   drawScatterPlot() {
 
@@ -214,8 +217,13 @@ class ScatterPlot extends Component {
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi']))
       .attr("transform", "translate(250,250)")
-      .attr('fill',this.data[0]['rsi']>=70?"green":"red")
-
+      .attr('fill',this.data[0]['rsi']>=70?"red":"green")
+      
+    var rsi_path_rest=this.svg.append("path")
+    .attr("id", "arc_rsi" )       
+    .attr('d', this.generateRSIArcRest(circleRadius,this.data[0]['rsi']))
+    .attr("transform", "translate(250,250)")
+    .attr('fill',this.data[0]['rsi']>=70?"green":"red")
     
       var tooltip = d3.select("body")
       .append("div")
@@ -226,7 +234,7 @@ class ScatterPlot extends Component {
       .style("border", "solid")
       .style("border-width", "2px")
       .style("border-radius", "5px")
-      .style("padding", "5px");
+      .style("padding", "3px");
       
 
     var gDot=scatter.append("g")        
@@ -241,15 +249,18 @@ class ScatterPlot extends Component {
       .attr("cy", d => y(d[this.state.selectedYAxis]))
       .attr("r", 1)
       .on('mouseover', (event,d) => { 
-        console.log(d['sma(25)'])
-        console.log(d['sma(125)'])
-        //console.log(d['date'])
+        console.log(d.rsi)
 
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
+        .attr('fill',d.rsi>=70?"green":"red")
+
+        rsi_path_rest.transition()
+        .duration(200) // Animation duration in milliseconds
+        .attr('d', this.generateRSIArcRest(circleRadius,d.rsi))
         .attr('fill',d.rsi>=70?"red":"green")
-       // console.log(d.rsi)
+       
         tooltip.text(d.date); return tooltip.style("visibility", "visible");
 
        
