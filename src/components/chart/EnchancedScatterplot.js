@@ -167,6 +167,7 @@ class ScatterPlot extends Component {
 
 
   const zoom=d3.zoom()// This control how much you can unzoom (x0.5) and zoom (x20)
+  .scaleExtent([1, 10])
   .on("zoom",zoomed);  
 
   this.svg.append("rect")
