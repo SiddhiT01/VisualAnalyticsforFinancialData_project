@@ -9,6 +9,8 @@ import Experiment from "./routes/Experiment";
 import Login from "./routes/Login";
 import LoggedInRoute from "./components/auth/LoggedInRoute";
 import Home from "./routes/Home";
+import Sample from "./routes/Sample";
+
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home/>,
+      },
+      {
+        path: '/mockup',
+        element: <Sample/>,
       },
       {
         path: '/experiment',

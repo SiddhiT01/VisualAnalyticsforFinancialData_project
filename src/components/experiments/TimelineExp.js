@@ -53,8 +53,7 @@ const TimelineExp = ({isPaused, onExperimentDataChange}) => {
               return (
                 <Box p={1} border={'1px dashed grey'} borderRadius={1} margin={1} key={i} xs={12}>
                   <Timeseries options={info.chartOptions}/>
-                  <TrendRadioPicker
-                    onChange={(newPrediction) => onTrendChange(info.id, info.symbol, newPrediction, info.trend)}/>
+                  <TrendRadioPicker onChange={(newPrediction) => onTrendChange(info.id, info.symbol, newPrediction, info.trend)}/>
                   {/*<p style={{fontSize: 13}}>*/}
                   {/*  {info.trend} - {i} - {info.symbol}*/}
                   {/*</p>*/}

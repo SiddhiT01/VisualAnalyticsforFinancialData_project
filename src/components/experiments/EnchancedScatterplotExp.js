@@ -51,8 +51,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
             return (
               <Box
                 sx={{p: 1, border: '1px dashed lightgrey', borderRadius: 1, margin: 0.5}}
-                key={i}
-                
+                key={i}                
               >
                 <EnchancedScatterplot data={obj} i={i} id={obj.id} onChartClick={onChartClick} />
                 <TrendRadioPicker onChange={(newPrediction) => onTrendChange(obj.id, obj.name, newPrediction, obj.trend)}/>

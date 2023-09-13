@@ -11,6 +11,11 @@ const StudyNavbar = () => {
               Visualisation User Study
             </Typography>
           </Link>
+          <Link to="mockup">
+            <Typography variant={"h6"} sx={{color: "white", mr: 2}}>
+              Mockup
+            </Typography>
+          </Link>
           <Link to="experiment">
             <Typography variant={"h6"} sx={{color: "white", mr: 2}}>
               Experiment
