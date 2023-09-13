@@ -75,6 +75,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
           }}>
+            
           <Timeseries options={modalData?.chartOptions}/>
         </Box>
       </Modal>

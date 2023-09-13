@@ -101,8 +101,8 @@ class ScatterPlot extends Component {
 
     // Data
      // Chart dimensions. Change this to adjust the dimentions of chart
-     const width = 160;
-     const height = 160;
+     const width = 250;
+     const height = 250;
 
 
      const scatter_x=100;
@@ -112,6 +112,7 @@ class ScatterPlot extends Component {
      const circleRadius = 200;
      const circleX = 250;
      const circleY = 250;
+     var elem=this
     
      d3.select(this.chartRef).selectAll('*').remove();
      
@@ -201,8 +202,17 @@ class ScatterPlot extends Component {
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,"-"))
       .attr("transform", "translate(250,250)")
-      .attr('fill', "black")    
+      .attr('fill', "black")
+      .append("textPath")
+      .text("RSI");    
 
+      this.svg.append("text").attr("x", 180).attr("dy", -10)
+      .style("text-anchor","middle").append("textPath")
+      .attr("xlink:href","#arc_rsi") .text("RSI")
+    
+      .attr('fill', "black")
+      .append("textPath")
+      .text("RSI");
     var rsi_path=this.svg.append("path")
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi']))
@@ -215,6 +225,36 @@ class ScatterPlot extends Component {
     .attr("transform", "translate(250,250)")
     .attr('fill',this.data[0]['rsi']>=70?"green":"red")
     
+   
+    const tangentAngles =[[9.30,20] ,[8.30,70]]
+    tangentAngles.map(function(tangentAngle,i){
+
+    const lineEndY = circleX + 220 * Math.cos(tangentAngle[0]);
+    const lineEndX = circleY + 220 * Math.sin(tangentAngle[0]);
+    const lineStartY = circleX + 160 * Math.cos(tangentAngle[0]);
+    const lineStartX = circleY + 160 * Math.sin(tangentAngle[0]);
+    elem.svg.append("line")
+    .attr("x1", lineStartX)
+    .attr("y1", lineStartY)
+    .attr("y2",lineEndY)
+    .attr("x2", lineEndX) 
+    .attr("stroke", "blue") 
+    .attr("stroke-width", 2);
+
+    elem.svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", lineEndX+20)
+    .attr("y", lineEndY-10)
+    .text(tangentAngle[1]+"%");
+
+
+    })
+
+
+
+
+
       var tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
@@ -299,7 +339,7 @@ class ScatterPlot extends Component {
     .on('click',(event,d) => this.handleAxisChange(d.name,d.axis));
  
 
-    var elem=this
+    
     function zoomed({transform}){
       
       var zx = transform.rescaleX(x).interpolate(d3.interpolateRound);
@@ -325,6 +365,8 @@ class ScatterPlot extends Component {
   render() {
     return (
       <svg ref={ref => this.chartRef = ref}></svg>
+      
+      
     );
   }
 }
