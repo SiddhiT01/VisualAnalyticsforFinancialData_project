@@ -43,9 +43,9 @@ const Experiment = () => {
     if (!firstChartClickTime) {
       setFirstChartClickTime({ hours, minutes, seconds });
     }
-    
+    //console.log(key)
     const newData = {...experimentData[key], ...data};
-
+    console.log(newData)
     setExperimentData({
       ...experimentData,
       [key]: newData

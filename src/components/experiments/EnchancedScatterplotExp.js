@@ -1,4 +1,4 @@
-import {Box, Modal,Typography} from "@mui/material";
+import {Box, Modal} from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
 import enhancedCSPData from "../../data/enhancedCSPData.json";
@@ -10,19 +10,19 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
  
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
-
-  const onTrendChange = (i, symbol, prediction, correct) => {
-    const compositeKey = `${symbol}-${i}`;
-    console.log(symbol)
-    console.log(correct)
+  
+  const onTrendChange = (id, symbol, prediction, correct) => {
+    const compositeKey = `${symbol}-${id}`;
+    //console.log(symbol)
+    console.log(compositeKey)
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
   const onChartClick = (i, id, symbol) => {
    
-   // onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
+   onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
 
     setOpen(true);
-   
+   console.log( `${symbol}-${id}`)
     const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[i].data);
     setModalData({
       chartOptions: {
@@ -52,9 +52,9 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
             return (
               <Box
                 sx={{p: 1, border: '1px dashed lightgrey', borderRadius: 1, margin: 0.5}}
-                key={i}                
+                key={i}  onClick={() => onChartClick(i, obj.id, obj.name)}              
               >
-                <EnchancedScatterplot data={obj} i={i} id={obj.id} onChartClick={onChartClick} />
+                <EnchancedScatterplot data={obj} i={i} id={obj.id} />
                 <TrendRadioPicker onChange={(newPrediction) => onTrendChange(obj.id, obj.name, newPrediction, obj.trend)}/>
                
               </Box>

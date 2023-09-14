@@ -35,7 +35,7 @@ class ScatterPlot extends Component {
       //     this.data[i].color = color
         
       // }
-       this.onChartClick=props['onChartClick']
+      // this.onChartClick=props['onChartClick']
        this.i=props['i']
        this.id=props['id']
      //  console.log(this.data)
@@ -182,7 +182,7 @@ class ScatterPlot extends Component {
 // the scatter variable: where both the dot and the line take place
   var scatter = this.svg.append('g')
   .attr("clip-path", "url(#clip)")
-  .on("click",(event,d)=> this.onChartClick(this.i, this.id, this.data[0].Name));
+  //.on("click",(event,d)=> this.onChartClick(this.i, this.id, this.data[0].Name));
 
    
     
@@ -277,7 +277,7 @@ class ScatterPlot extends Component {
       .attr("stroke",  d => d.color)
       .attr("cx", d => x(d[this.state.selectedXAxis]))
       .attr("cy", d => y(d[this.state.selectedYAxis]))
-      .attr("r", (d,i)=>{return 1})//((4/elem.data.length)*i)+1})
+      .attr("r", (d,i)=>{return 3})//((4/elem.data.length)*i)+1})
       .on('mouseover', (event,d) => { 
        // console.log(d.date)
         
