@@ -13,11 +13,12 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
 
   const onTrendChange = (i, symbol, prediction, correct) => {
     const compositeKey = `${symbol}-${i}`;
-
+    console.log(symbol)
+    console.log(correct)
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
   const onChartClick = (i, id, symbol) => {
-    console.log(symbol)
+   
     onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
 
     setOpen(true);

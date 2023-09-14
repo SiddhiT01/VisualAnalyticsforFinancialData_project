@@ -2,7 +2,7 @@
     {
         "id": 0,
         "name": "AAP",
-        "trend": "up",
+        "trend": "down",
         "data": [
             {
                 "date": "08/08/2017",
@@ -4244,7 +4244,7 @@
     {
         "id": 2,
         "name": "AMD",
-        "trend": "up",
+        "trend": "notrend",
         "data": [
             {
                 "date": "08/08/2017",
@@ -21212,7 +21212,7 @@
     {
         "id": 10,
         "name": "FOX",
-        "trend": "up",
+        "trend": "down",
         "data": [
             {
                 "date": "08/08/2017",
@@ -25454,7 +25454,7 @@
     {
         "id": 12,
         "name": "HP",
-        "trend": "up",
+        "trend": "down",
         "data": [
             {
                 "date": "08/08/2017",
@@ -27575,7 +27575,7 @@
     {
         "id": 13,
         "name": "IBM",
-        "trend": "up",
+        "trend": "down",
         "data": [
             {
                 "date": "08/08/2017",
@@ -33938,7 +33938,7 @@
     {
         "id": 16,
         "name": "MAA",
-        "trend": "up",
+        "trend": "notrend",
         "data": [
             {
                 "date": "08/08/2017",
@@ -36059,7 +36059,7 @@
     {
         "id": 17,
         "name": "NDAQ",
-        "trend": "up",
+        "trend": "notrend",
         "data": [
             {
                 "date": "08/08/2017",
@@ -40301,7 +40301,7 @@
     {
         "id": 19,
         "name": "OXY",
-        "trend": "up",
+        "trend": "notrend",
         "data": [
             {
                 "date": "08/08/2017",
@@ -42422,7 +42422,7 @@
     {
         "id": 20,
         "name": "ZION",
-        "trend": "up",
+        "trend": "notrend",
         "data": [
             {
                 "date": "08/08/2017",

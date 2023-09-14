@@ -277,9 +277,9 @@ class ScatterPlot extends Component {
       .attr("stroke",  d => d.color)
       .attr("cx", d => x(d[this.state.selectedXAxis]))
       .attr("cy", d => y(d[this.state.selectedYAxis]))
-      .attr("r", (d,i)=>{return ((4/elem.data.length)*i)+1})
+      .attr("r", (d,i)=>{return 1})//((4/elem.data.length)*i)+1})
       .on('mouseover', (event,d) => { 
-        console.log(d.date)
+       // console.log(d.date)
         
 
         rsi_path.transition()
