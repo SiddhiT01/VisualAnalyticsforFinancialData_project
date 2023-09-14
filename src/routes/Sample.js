@@ -24,8 +24,8 @@ const Sample = () => {
    
     }
   
-    const onChartClick = (i, id, symbol) => {
-        
+    const onChartClick = () => {
+        console.log('inside')
         setOpen(true);
        
         
@@ -81,8 +81,8 @@ const Sample = () => {
       </Box>
       
       <h2>Enchanced interface:</h2>
-      <Box p={2} maxWidth={200} border={"1px dashed lightgrey"}>
-            <EnchancedScatterplot data={enhancedCSPData[0]} i={1} id={1} onChartClick={onChartClick} />
+      <Box p={2} maxWidth={200} border={"1px dashed lightgrey"}  onClick={() => onChartClick()}>
+            <EnchancedScatterplot data={enhancedCSPData[0]} i={1} id={1} />
             <TrendRadioPicker onChange={(newPrediction) => onTrendChange(newPrediction,enhancedCSPData[0].trend,"enhanced")} />
             <center><Typography component={"span"} align="center" color={prediction.enhanced.color}>{prediction.enhanced.result}</Typography></center>
     
