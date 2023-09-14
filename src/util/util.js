@@ -68,12 +68,12 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
 
     indicatorOneData.push({
       x: date,
-      y: dataPoint['sma(100)']
+      y: dataPoint['sma(250)']
     });
   
     indicatorTwoData.push({
       x: date,
-      y: dataPoint['sma(25)']
+      y: dataPoint['sma(50)']
     });
     indicatorThreeData.push({
       x: date,
@@ -90,14 +90,14 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
      turboThreshold :0
     },
     {
-      name: 'SMA(100)',
+      name: 'SMA(250)',
       data: indicatorOneData,
       color: "#f68d3f",
       showInLegend: true,
       turboThreshold :0
     },
     {
-      name: 'SMA(25)',
+      name: 'SMA(50)',
       data: indicatorTwoData,
       color: "#7300ff",
       showInLegend: true,

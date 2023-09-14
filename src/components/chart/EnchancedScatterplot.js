@@ -6,43 +6,24 @@ class ScatterPlot extends Component {
         super(props);
     
         this.state = {
-          selectedXAxis: "sma(100)",
-          selectedYAxis: "sma(25)"         
+          selectedXAxis: "sma(250)",
+          selectedYAxis: "sma(50)"         
         };
     
         this.xAxisOptions = [
-        {"name":"sma(25)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y'},
+        {"name":"sma(50)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y'},
         {"name":"ema","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y'},
        // {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
-        {"name":"sma(100)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
+        {"name":"sma(250)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
         {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x'},
        // {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
     ];
        this.data=props["data"]["data"]
-      // let beginningColor = new Color("p3", [0, 1, 0]);
-      // let endColor = new Color("p3", [1, 0, 0]);
 
-      // let gradient = beginningColor.range(endColor, {
-      //   space: "lch",
-      //   outputSpace: "srgb"
-      // });
-
-      // for (let i = 0; i < this.data.length ; i++) {
-       
-      //     const color = gradient(i / (this.data.length )).toString();
-      //    // console.log(gradient(i / (this.data.length )))
-      //     this.data[i].color = color
-        
-      // }
-      // this.onChartClick=props['onChartClick']
        this.i=props['i']
        this.id=props['id']
-     //  console.log(this.data)
-
-      
-     
-        
+   
      
       }
   componentDidMount() {
@@ -182,8 +163,6 @@ class ScatterPlot extends Component {
 // the scatter variable: where both the dot and the line take place
   var scatter = this.svg.append('g')
   .attr("clip-path", "url(#clip)")
-  //.on("click",(event,d)=> this.onChartClick(this.i, this.id, this.data[0].Name));
-
    
     
     var gLine=scatter.append("path")
@@ -217,16 +196,16 @@ class ScatterPlot extends Component {
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi']))
       .attr("transform", "translate(250,250)")
-      .attr('fill',this.data[0]['rsi']>=70?"red":"green")
+      .attr('fill',this.data[0]['rsi']>70?"red":"green")
       
-    var rsi_path_rest=this.svg.append("path")
-    .attr("id", "arc_rsi" )       
-    .attr('d', this.generateRSIArcRest(circleRadius,this.data[0]['rsi']))
-    .attr("transform", "translate(250,250)")
-    .attr('fill',this.data[0]['rsi']>=70?"green":"red")
+    // var rsi_path_rest=this.svg.append("path")
+    // .attr("id", "arc_rsi" )       
+    // .attr('d', this.generateRSIArcRest(circleRadius,this.data[0]['rsi']))
+    // .attr("transform", "translate(250,250)")
+    // .attr('fill',this.data[0]['rsi']>=70?"green":"red")
     
    
-    const tangentAngles =[[9.30,20] ,[8.30,70]]
+    const tangentAngles =[[9.10,30] ,[8.30,70]]
     tangentAngles.map(function(tangentAngle,i){
 
     const lineEndY = circleX + 220 * Math.cos(tangentAngle[0]);
@@ -279,18 +258,17 @@ class ScatterPlot extends Component {
       .attr("cy", d => y(d[this.state.selectedYAxis]))
       .attr("r", (d,i)=>{return 3})//((4/elem.data.length)*i)+1})
       .on('mouseover', (event,d) => { 
-       // console.log(d.date)
-        
+       
 
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
-        .attr('fill',d.rsi>=70?"green":"red")
+        .attr('fill',d.rsi>70?"red":"green")
 
-        rsi_path_rest.transition()
-        .duration(200) // Animation duration in milliseconds
-        .attr('d', this.generateRSIArcRest(circleRadius,d.rsi))
-        .attr('fill',d.rsi>=70?"red":"green")
+        // rsi_path_rest.transition()
+        // .duration(200) // Animation duration in milliseconds
+        // .attr('d', this.generateRSIArcRest(circleRadius,d.rsi))
+        // .attr('fill',d.rsi>=70?"green":"red")
        
         tooltip.text(d.date); 
         return tooltip.style("visibility", "visible");

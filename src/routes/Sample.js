@@ -1,8 +1,8 @@
 import {Box, Container,Modal, Tooltip, Typography} from "@mui/material";
 import EnchancedScatterplot from "../components/chart/EnchancedScatterplot";
 import TrendRadioPicker from "../components/experiments/TrendRadioPicker";
-import enhancedCSPData from "../data/enhancedCSPData.json";
-import experimentData from "../data/experimentData.json";
+import enhancedCSPData from "../data/enhancedCSPData16.json";
+import experimentData from "../data/experimentData2.json";
 import Timeseries from "../components/chart/Timeseries";
 import Scatterplot from "../components/chart/Scatterplot";
 import * as React from 'react';
@@ -10,32 +10,39 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import {getFormattedTimeseriesForExtScatter} from "../util/util";
+import {getFormattedTimeseriesForExtScatter,getFormattedTimeseriesForCompany} from "../util/util";
 import {useState,useEffect } from "react";
 const Sample = () => {
     const [open, setOpen] = useState(false);
     const [prediction, setpredictionResult] = useState({timeline:[],connected:[],enhanced:[]});
     const [value, setValue] = React.useState('1');
-
+    const [modalData, setModalData] = useState(null);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
    
     const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[0].data);
-    const onTrendChange = (btnprediction, correct,chart_id) =>{
+    const onTrendChange = (id,btnprediction, correct,chart_type) =>{
     if(correct==btnprediction){
-        prediction[chart_id]={"result":"Correct","color":"green"}
+        prediction[chart_type][id]={"result":"Correct","color":"green"}
     }else{
-        prediction[chart_id]={"result":"Try Again","color":"red"}
+        prediction[chart_type][id]={"result":"Try Again","color":"red"}
     }
     setpredictionResult(prevState => ({...prevState,prediction}))
    
     }
   
-    const onChartClick = () => {
+    const onChartClick = (i, id, symbol) => {
         console.log('inside')
         setOpen(true);
-       
+        const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[i].data);
+        setModalData({
+          chartOptions: {
+            series,
+            showInLegend: true,
+            
+          }
+        });
         
       }
       const sharedAxisOptions = {
@@ -62,7 +69,26 @@ const Sample = () => {
           }
         }
       }
+      const getAllSeries = () => {
+        const allSeries = [];
     
+        experimentData.data.forEach((companyInfo) => {
+          allSeries.push(getFormattedTimeseriesForCompany(companyInfo))
+        });
+    
+        return allSeries;
+      }
+      const allChartInformation = getAllSeries().map((series, i) => {
+        return {
+          chartOptions: {
+            showInLegend: true,
+            series,
+          },
+          symbol: experimentData.data[i].symbol,
+          id: experimentData.data[i].id,
+          trend: experimentData.data[i].trend,
+        }
+      });
 
   return (
     <Container maxWidth={"md"}>
@@ -80,30 +106,72 @@ const Sample = () => {
       <Tab label="Enchanced interface" value="3" />
     </TabList>
   </Box>
-  <TabPanel value="1"> 
+  <TabPanel value="1">
+ 
+  {allChartInformation.map((info, i) => {
+              return ( 
     <Box  p={2} border={"1px dashed lightgrey"}>
-      <Timeseries options={{
-          series,
-          showInLegend: true,
-          
-        }}/>
-      <TrendRadioPicker onChange={(newPrediction) => onTrendChange(newPrediction,"down","timeline")}  />
-      <center><Typography component={"span"} align="center" color={prediction.timeline.color}>{prediction.timeline.result}</Typography></center>
-      </Box>      
+      <Timeseries options={info.chartOptions}/>
+      <TrendRadioPicker onChange={(newPrediction) => onTrendChange(info.id, newPrediction, info.trend,"timeline")}  />
+      <center><Typography component={"span"} align="center" color={prediction.timeline[info.id]?.color}>{prediction.timeline[info.id]?.result}</Typography></center>
+      </Box> );
+            })}
   </TabPanel>
 
-  <TabPanel value="2"> <Box p={2} maxWidth={200} border={"1px dashed lightgrey"}>
-      <Scatterplot data={experimentData.data[0].data.scatterplot} options={ScatterchartOptions}/>
-      <TrendRadioPicker onChange={(newPrediction) => onTrendChange(newPrediction,experimentData.data[0].trend,"connected")}/>
-      <center><Typography component={"span"} align="center" color={prediction.connected.color}>{prediction.connected.result}</Typography></center>
+  <TabPanel value="2"> 
+  <Typography gutterBottom variant={"body1"} align={"center"}>
+          A <Typography component={"span"} color={"red"}>red marker</Typography> means the start of the connected
+          scatterplot, a <Typography component={"span"} color={"lightgreen"}>green marker</Typography> means the end of
+          the
+          connected scatterplot. (<Typography component={"span"} color={"lightgreen"}>Green</Typography> = most recent)
+        </Typography>
+  <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 0,
+          }}
+         
+        >
+  {experimentData.data.map((obj, i) => {
+    return (
+    <Box p={2} key={i} sx={{p: 1, border: '1px dashed lightgrey', borderRadius: 1, margin: 0.5}}>
+      <Scatterplot data={obj.data.scatterplot} options={ScatterchartOptions}/>
+      <TrendRadioPicker onChange={(newPrediction) => onTrendChange(i,newPrediction,obj.trend,"connected")}/>
+      <center><Typography component={"span"} align="center" color={prediction.connected[i]?.color}>{prediction.connected[i]?.result}</Typography></center>
     
       </Box>
+     );
+    })}
+     </Box>
   </TabPanel>
-  <TabPanel value="3"> <Box p={2} maxWidth={200} border={"1px dashed lightgrey"}  onClick={() => onChartClick()}>
-            <EnchancedScatterplot data={enhancedCSPData[0]} i={1} id={1} />
-            <TrendRadioPicker onChange={(newPrediction) => onTrendChange(newPrediction,enhancedCSPData[0].trend,"enhanced")} />
-            <center><Typography component={"span"} align="center" color={prediction.enhanced.color}>{prediction.enhanced.result}</Typography></center>
+  <TabPanel value="3">
+  <Typography gutterBottom variant={"body1"} align={"center"}>
+          A <Typography component={"span"} color={"red"}>red marker</Typography> means the start of the connected
+          scatterplot, a <Typography component={"span"} color={"lightgreen"}>green marker</Typography> means the end of
+          the
+          connected scatterplot. (<Typography component={"span"} color={"lightgreen"}>Green</Typography> = most recent)
+        </Typography>
+  <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 0,
+          }}
+         
+        >
+           {enhancedCSPData.map((obj,i) => {
+            return (
+     <Box p={2} maxWidth={200} border={"1px dashed lightgrey"}  onClick={() => onChartClick(i, obj.id, obj.name)}>
+            <EnchancedScatterplot data={obj} i={i} id={obj.id} />
+            <TrendRadioPicker onChange={(newPrediction) => onTrendChange(i,newPrediction,obj.trend,"enhanced")} />
+            <center><Typography component={"span"} align="center" color={prediction.enhanced[i]?.color}>{prediction.enhanced[i]?.result}</Typography></center>
     
+      </Box>
+    );
+    })} 
       </Box>
       <Modal
         open={open}
@@ -120,11 +188,7 @@ const Sample = () => {
             transform: 'translate(-50%, -50%)',
           }}>
             
-          <Timeseries options={{
-          series,
-          showInLegend: true,
-          
-        }}/>
+          <Timeseries options={modalData?.chartOptions}/>
         </Box>
       </Modal>
     </TabPanel>
