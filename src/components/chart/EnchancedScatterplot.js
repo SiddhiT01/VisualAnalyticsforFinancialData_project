@@ -101,8 +101,8 @@ class ScatterPlot extends Component {
 
     // Data
      // Chart dimensions. Change this to adjust the dimentions of chart
-     const width = 150;
-     const height = 150;
+     const width = 175;
+     const height = 175;
 
 
      const scatter_x=100;
