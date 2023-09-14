@@ -5,13 +5,13 @@ import {Navigate} from 'react-router-dom'
 const LoggedInRoute = ({ children }) => {
   const [user, loading, error] = useAuthState(auth);
 
-  if (!user && !loading) {
-    return <Navigate to={'/login'} replace={true}/>;
-  } else if (error) {
-    return <div>Error: {error}</div>;
-  } else if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (!user && !loading) {
+  //   return <Navigate to={'/login'} replace={true}/>;
+  // } else if (error) {
+  //   return <div>Error: {error}</div>;
+  // } else if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return children;
 }
