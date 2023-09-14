@@ -196,7 +196,7 @@ class ScatterPlot extends Component {
       .attr("id", "arc_rsi" )       
       .attr('d', this.generateRSIArc(circleRadius,this.data[0]['rsi']))
       .attr("transform", "translate(250,250)")
-      .attr('fill',this.data[0]['rsi']>70?"red":"green")
+      .attr('fill',this.data[0]['rsi']>70?"red":(this.data[0]['rsi']<=30?"green":"grey"))
       
     // var rsi_path_rest=this.svg.append("path")
     // .attr("id", "arc_rsi" )       
@@ -263,7 +263,7 @@ class ScatterPlot extends Component {
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
-        .attr('fill',d.rsi>70?"red":"green")
+        .attr('fill',d.rsi>70?"red": (d.rsi<=30?"green":"grey"))
 
         // rsi_path_rest.transition()
         // .duration(200) // Animation duration in milliseconds
