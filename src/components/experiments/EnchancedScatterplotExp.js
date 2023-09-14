@@ -19,7 +19,7 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
   }
   const onChartClick = (i, id, symbol) => {
    
-    onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
+   // onExperimentDataChange({key: `${symbol}-${id}`, data: {clicked: true}});
 
     setOpen(true);
    
