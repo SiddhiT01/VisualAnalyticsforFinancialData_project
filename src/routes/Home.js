@@ -55,7 +55,8 @@ const Home = () => {
       </Typography>
       <h2>How to start</h2>
       <Typography fontSize={20} paragraph mb={50}>
-        When you are ready to begin, go to the <b>"Account"</b> page and login with the account provided to you. Afterwards, go to the <b>"Experiment"</b> page.
+        When you are ready to begin, go to the <b>"Account"</b> page and login with the account provided to you. Afterwards, go to the <b>"Mockup"</b> page and play around a while to get to know about the idea.
+        Then, go to the <b>"Experiment"</b> page
       </Typography>
     </Container>
   );
