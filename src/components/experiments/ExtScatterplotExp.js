@@ -39,7 +39,7 @@ const ExtScatterplotExp = ({isPaused, onExperimentDataChange}) => {
 
   const onTrendChange = (id, symbol, prediction, correct) => {
     const compositeKey = `${symbol}-${id}`;
-
+   
     onExperimentDataChange({key: compositeKey, data: {prediction, correct}});
   }
 

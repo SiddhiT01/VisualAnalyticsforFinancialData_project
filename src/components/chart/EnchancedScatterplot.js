@@ -11,11 +11,11 @@ class ScatterPlot extends Component {
         };
     
         this.xAxisOptions = [
-        {"name":"sma(50)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y'},
-        {"name":"ema","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y'},
+        {"name":"sma(50)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y',"label":"SMA-50"},
+        {"name":"ema","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y',"label":"EMA"},
        // {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
-        {"name":"sma(250)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x'},
-        {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x'},
+        {"name":"sma(250)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x',"label":"SMA-250"},
+        {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x',"label":"price"},
        // {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
     
     ];
@@ -87,7 +87,7 @@ class ScatterPlot extends Component {
 
 
      const scatter_x=100;
-     const scatter_y=100;
+     const scatter_y=120;
      const scatter_width=300;
      const scatter_height=300;
      const circleRadius = 200;
@@ -125,13 +125,13 @@ class ScatterPlot extends Component {
    //const l = calculateTotalLength(line(this.data));
    
     var xAxis=this.svg.append("g")
-      .attr("transform", `translate(50,${scatter_height + 100})`)
+      .attr("transform", `translate(40,${scatter_height + 80})`)
       .call(d3.axisBottom(x).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
      
     
     var yAxis=this.svg.append("g")
-      .attr("transform", `translate(${scatter_height-200},50)`)
+      .attr("transform", `translate(${scatter_height-170},50)`)
       .call(d3.axisLeft(y).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"))
       
@@ -142,10 +142,10 @@ class ScatterPlot extends Component {
     this.svg.append("defs").append("SVG:clipPath")
     .attr("id", "clip")
     .append("SVG:rect")
-    .attr("width", scatter_width-10)
-    .attr("height", scatter_height-10)
-    .attr("x", 110)
-    .attr("y", 110);
+    .attr("width", scatter_width-50)
+    .attr("height", scatter_height-60)
+    .attr("x", 130)
+    .attr("y", 150);
 
 
   const zoom=d3.zoom()// This control how much you can unzoom (x0.5) and zoom (x20)
@@ -198,12 +198,7 @@ class ScatterPlot extends Component {
       .attr("transform", "translate(250,250)")
       .attr('fill',this.data[0]['rsi']>70?"red":(this.data[0]['rsi']<=30?"green":"grey"))
       
-    // var rsi_path_rest=this.svg.append("path")
-    // .attr("id", "arc_rsi" )       
-    // .attr('d', this.generateRSIArcRest(circleRadius,this.data[0]['rsi']))
-    // .attr("transform", "translate(250,250)")
-    // .attr('fill',this.data[0]['rsi']>=70?"green":"red")
-    
+
    
     const tangentAngles =[[9.10,30] ,[8.30,70]]
     tangentAngles.map(function(tangentAngle,i){
@@ -259,6 +254,7 @@ class ScatterPlot extends Component {
       .attr("r", (d,i)=>{return 3})//((4/elem.data.length)*i)+1})
       .on('mouseover', (event,d) => { 
        
+         
 
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
@@ -313,7 +309,7 @@ class ScatterPlot extends Component {
     .attr("startOffset", "20%")    
     .attr('fill', 'white')
     .attr('font-size', '20px')    
-    .text( d=>  d.name)
+    .text( d=>  d.label)
     .style("cursor", "pointer")    
     .on('click',(event,d) => this.handleAxisChange(d.name,d.axis));
  

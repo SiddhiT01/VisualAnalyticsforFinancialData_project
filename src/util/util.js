@@ -75,10 +75,10 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
       x: date,
       y: dataPoint['sma(50)']
     });
-    indicatorThreeData.push({
-      x: date,
-      y: dataPoint['ema']
-    });
+    // indicatorThreeData.push({
+    //   x: date,
+    //   y: dataPoint['ema']
+    // });
   });
 
   return [
@@ -103,11 +103,12 @@ export const getFormattedTimeseriesForExtScatter = (dataInfo) => {
       showInLegend: true,
       turboThreshold :0
     },
-    {
-      name: 'EMA',
-      data: indicatorThreeData,
-      color: "red",
-      showInLegend: true,
-      turboThreshold :0
-    }];
+    // {
+    //   name: 'EMA',
+    //   data: indicatorThreeData,
+    //   color: "red",
+    //   showInLegend: true,
+    //   turboThreshold :0
+    // }
+  ];
 }

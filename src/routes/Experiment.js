@@ -17,7 +17,7 @@ import enhancedCSPData from "../data/enhancedCSPData.json";
 
 const Experiment = () => {
   const [user] = useAuthState(auth);
-  const [value, loading] = useDocument(doc(db, 'users',"3YEi5olmnchKKrpS3C4hYxLgIqE3")) //user.uid
+  const [value, loading] = useDocument(doc(db, 'users',user.uid)) //user.uid
   const [submitting, setSubmitting] = useState(false);
 
   const [currentExperiment, setCurrentExperiment] = useState(0);
@@ -156,7 +156,12 @@ const Experiment = () => {
           scatterplot, a <Typography component={"span"} color={"lightgreen"}>&nbsp;green marker</Typography>&nbsp;means the end of
           the
           connected scatterplot. (<Typography component={"span"} color={"lightgreen"}>Green</Typography> = most recent)
+          
       </Typography>
+      <center><Typography gutterBottom display={isRunning ? "inline-flex" : "none"}>
+          Each scatterplot &nbsp;<Typography fontWeight={"bold"} component={"span"}>can be clicked</Typography>&nbsp; to open a modal with a timeseries chart of the same data. You should aim to use both charts to decide on the trend.
+        </Typography>
+        </center>
       <Typography variant={"caption"} display={!isRunning ? "block" : "none"}>
         <p>The experiment is currently paused. Press the play button to start/continue the experiment.</p>
       </Typography>
