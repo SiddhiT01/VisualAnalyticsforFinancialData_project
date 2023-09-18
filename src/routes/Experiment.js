@@ -105,6 +105,13 @@ const Experiment = () => {
       setSubmitting(false);
     }
   }
+  if (!userReadyStatus || !experimentOrder) {
+    return (
+      <Typography my={5} variant={"h5"} align={"center"}>
+        Your account has not been prepared, please contact the researcher.
+      </Typography>
+    );
+  }
 
   const experiment = ({...props}) => {
     switch (experimentOrder[currentExperiment]) {
@@ -126,13 +133,6 @@ const Experiment = () => {
     );
   }
 
-  if (!userReadyStatus) {
-    return (
-      <Typography my={5} variant={"h5"} align={"center"}>
-        Your account has not been prepared, please contact the researcher.
-      </Typography>
-    );
-  }
 
   const predictionsMade = Object.keys(experimentData).filter((key) => experimentData[key].prediction !== undefined).length;
   const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:enhancedCSPData.length);
