@@ -13,7 +13,7 @@ import {useState} from "react";
 import Prompt from "../components/Prompt";
 import experimentDataJson from "../data/experimentData.json";
 import {useStopwatch} from "react-timer-hook";
-import enhancedCSPData from "../data/enhancedCSPData.json";
+import enhancedCSPData from "../data/enhancedCSPData16.json";
 
 const Experiment = () => {
   const [user] = useAuthState(auth);
