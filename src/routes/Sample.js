@@ -1,7 +1,7 @@
 import {Box, Container,Modal, Tooltip, Typography} from "@mui/material";
 import EnchancedScatterplot from "../components/chart/EnchancedScatterplot";
 import TrendRadioPicker from "../components/experiments/TrendRadioPicker";
-import enhancedCSPData from "../data/enhancedCSPData16.json";
+import enhancedCSPData from "../data/enhancedCSPData.json";
 import experimentData from "../data/experimentData2.json";
 import Timeseries from "../components/chart/Timeseries";
 import Scatterplot from "../components/chart/Scatterplot";

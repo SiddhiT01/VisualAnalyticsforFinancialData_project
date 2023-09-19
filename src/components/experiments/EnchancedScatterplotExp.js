@@ -1,7 +1,7 @@
 import {Box, Modal} from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
-import enhancedCSPData from "../../data/enhancedCSPData.json";
+import enhancedCSPData from "../../data/enhancedCSPData16.json";
 import Timeseries from "../chart/Timeseries";
 import {getFormattedTimeseriesForExtScatter} from "../../util/util";
 import {useState} from "react";
