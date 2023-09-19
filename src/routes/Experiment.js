@@ -45,7 +45,7 @@ const Experiment = () => {
     }
     //console.log(key)
     const newData = {...experimentData[key], ...data};
-    console.log(newData)
+    //console.log(newData)
     setExperimentData({
       ...experimentData,
       [key]: newData
