@@ -8,7 +8,7 @@ const StudyNavbar = () => {
         <Toolbar>
           <Link to={"/"}>
             <Typography variant={"h5"} sx={{color: "white", mr: 2}}>
-              Visualisation User Study
+              User Study
             </Typography>
           </Link>
           <Link to="mockup">

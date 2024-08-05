@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import Color from "colorjs.io";
+
 class ScatterPlot extends Component {
     constructor(props) {
         super(props);
@@ -12,11 +12,9 @@ class ScatterPlot extends Component {
     
         this.xAxisOptions = [
         {"name":"sma(250)","startangle":5.4,"endangle":4.8,"color":"#9F6F2E","axis":'y',"label":"SMA-250"},
-        {"name":"sma(150)","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y',"label":"SMA-150"},
-       // {"name":"ema","startangle":4.6,"endangle":4.2,"color":"#5A1E5B","axis":'y'},        
+        {"name":"sma(150)","startangle":4.8,"endangle":4.2,"color":"#1E5B56","axis":'y',"label":"SMA-150"},      
         {"name":"sma(50)","startangle":3.8,"endangle":3.2,"color":" #9F2E2E","axis":'x',"label":"SMA-50"},
-        {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x',"label":"price"},
-       // {"name":"high","startangle":3,"endangle":2.6,"color":" #1E5B9F","axis":'x'},    
+        {"name":"close","startangle":3.2,"endangle":2.6,"color":"#2E8540","axis":'x',"label":"price"}, 
     
     ];
        this.data=props["data"]["data"]
@@ -259,17 +257,10 @@ class ScatterPlot extends Component {
         rsi_path.transition()
         .duration(200) // Animation duration in milliseconds
         .attr('d', this.generateRSIArc(circleRadius,d.rsi))
-        .attr('fill',d.rsi>70?"red": (d.rsi<=30?"green":"grey"))
-
-        // rsi_path_rest.transition()
-        // .duration(200) // Animation duration in milliseconds
-        // .attr('d', this.generateRSIArcRest(circleRadius,d.rsi))
-        // .attr('fill',d.rsi>=70?"green":"red")
+        .attr('fill',d.rsi>70?"red": (d.rsi<=30?"green":"grey"))       
        
         tooltip.text(d.date); 
-        return tooltip.style("visibility", "visible");
-
-       
+        return tooltip.style("visibility", "visible");       
       
         })
         .on("mousemove", function(event){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})

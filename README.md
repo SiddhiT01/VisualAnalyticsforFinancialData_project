@@ -13,7 +13,7 @@ _Live Example: https://create-react-template.vercel.app/_
 ## Available Scripts
 
 In the project directory, you can run:
-
+### `npm install` for node modules
 ### `npm start`
 
 Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.

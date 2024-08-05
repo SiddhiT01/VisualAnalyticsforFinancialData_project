@@ -2,6 +2,7 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "../../util/firebase";
 import {Navigate} from 'react-router-dom'
 
+
 const LoggedInRoute = ({ children }) => {
   const [user, loading, error] = useAuthState(auth);
 

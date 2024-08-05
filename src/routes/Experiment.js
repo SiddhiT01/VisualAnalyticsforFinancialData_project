@@ -105,6 +105,8 @@ const Experiment = () => {
       setSubmitting(false);
     }
   }
+  console.log(user.uid)
+  console.log(experimentOrder)
   if (!userReadyStatus || !experimentOrder) {
     return (
       <Typography my={5} variant={"h5"} align={"center"}>

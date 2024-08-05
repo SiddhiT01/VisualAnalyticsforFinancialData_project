@@ -3,6 +3,7 @@ import {auth} from "../util/firebase";
 import {EmailAuthProvider} from 'firebase/auth'
 import StyledFirebaseAuth from "../components/auth/StyledFirebaseAuth";
 
+
 const Login = () => {
   const [user, loading, error] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
