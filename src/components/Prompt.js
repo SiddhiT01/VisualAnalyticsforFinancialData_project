@@ -1,14 +1,10 @@
 // Code taken from: https://stackoverflow.com/a/75920683/6246960
 
-import {unstable_useBlocker} from "react-router-dom";
+// src/components/Prompt.js
+import useBlocker from './useblocker';
 
 const Prompt = ({ when, message }) => {
-  unstable_useBlocker(() => {
-    if (when) {
-      return !window.confirm(message);
-    }
-    return false;
-  })
+  useBlocker(when, message);
 
   return <div key={when} />;
 }
