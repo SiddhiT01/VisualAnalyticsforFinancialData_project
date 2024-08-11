@@ -30,7 +30,7 @@ class ScatterPlot extends Component {
   }
   handleAxisChange = (option,axis) => {
  
-    if(axis=='x')
+    if(axis==='x')
     this.setState({ selectedXAxis: option });
     else
     this.setState({ selectedYAxis: option });
@@ -52,7 +52,7 @@ class ScatterPlot extends Component {
 
     }
     generateRSIArc(circleRadius,rsi){
-      if(rsi=='-'){
+      if(rsi==='-'){
         return d3.arc()({
           innerRadius: circleRadius,
           outerRadius: circleRadius-15,

@@ -137,7 +137,7 @@ const Experiment = () => {
 
 
   const predictionsMade = Object.keys(experimentData).filter((key) => experimentData[key].prediction !== undefined).length;
-  const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:enhancedCSPData.length);
+  const submissionValid = predictionsMade === (experimentOrder[currentExperiment]!=="enchanced_scatterplot"?experimentDataJson.dataAmount:enhancedCSPData.length);
 
 
   if (finished || userFinishStatus) {
@@ -177,7 +177,7 @@ const Experiment = () => {
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"} width={"100%"} my={"2em"} sx={{ flexDirection: "column"}}>
         {!submissionValid &&
           <Typography variant={"caption"} color={"error"} paragraph>
-            {predictionsMade} /  {(experimentOrder[currentExperiment]!="enchanced_scatterplot"?experimentDataJson.dataAmount:enhancedCSPData.length)} trends have been selected.
+            {predictionsMade} /  {(experimentOrder[currentExperiment]!=="enchanced_scatterplot"?experimentDataJson.dataAmount:enhancedCSPData.length)} trends have been selected.
           </Typography>
         }
         <Button

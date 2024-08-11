@@ -23,7 +23,7 @@ const Sample = () => {
    
     const series = getFormattedTimeseriesForExtScatter(enhancedCSPData[0].data);
     const onTrendChange = (id,btnprediction, correct,chart_type) =>{
-    if(correct==btnprediction){
+    if(correct===btnprediction){
         prediction[chart_type][id]={"result":"Correct","color":"green"}
     }else{
         prediction[chart_type][id]={"result":"Try Again","color":"red"}
