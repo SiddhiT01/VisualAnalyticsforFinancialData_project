@@ -1,12 +1,13 @@
 // Code taken from: https://stackoverflow.com/a/75920683/6246960
 
 // src/components/Prompt.js
-import useBlocker from './useblocker';
+
+import { unstable_usePrompt as usePrompt } from 'react-router-dom';
 
 const Prompt = ({ when, message }) => {
-  useBlocker(when, message);
+  usePrompt(message, when);
 
-  return <div key={when} />;
+  return null;
 }
 
 export default Prompt;

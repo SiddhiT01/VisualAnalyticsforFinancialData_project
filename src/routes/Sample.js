@@ -1,6 +1,7 @@
+
 import {Box, Container,Modal, Tooltip, Typography} from "@mui/material";
 import EnchancedScatterplot from "../components/chart/EnchancedScatterplot";
-import TrendRadioPicker from "../components/experiments/TrendRadioPicker";
+//import TrendRadioPicker from "../experiments/TrendRadioPicker";
 import enhancedCSPData from "../data/enhancedCSPData.json";
 import experimentData from "../data/experimentData2.json";
 import Timeseries from "../components/chart/Timeseries";
@@ -11,6 +12,9 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import {getFormattedTimeseriesForExtScatter,getFormattedTimeseriesForCompany} from "../util/util";
+import TrendRadioPicker from "../components/experiments/TrendRadioPicker";
+
+
 import {useState,useEffect } from "react";
 const Sample = () => {
     const [open, setOpen] = useState(false);

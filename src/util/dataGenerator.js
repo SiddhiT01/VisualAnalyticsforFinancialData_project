@@ -261,3 +261,4 @@ generateData();
 
 // See top of file
 // getRandomCompanySymbols(60);
+

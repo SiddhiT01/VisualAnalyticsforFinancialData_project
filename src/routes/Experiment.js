@@ -123,7 +123,7 @@ const Experiment = () => {
         return <TimelineExp {...props} />;
       case "extended":
         return <ExtScatterplotExp {...props} />;
-      case "enchanced_scatterplot":
+      case "enhanced_scatterplot":
         return <EnchancedScatterplotExp {...props} />;
       default:
         return <Typography>Invalid experiment</Typography>;
@@ -193,3 +193,4 @@ const Experiment = () => {
 }
 
 export default Experiment;
+
