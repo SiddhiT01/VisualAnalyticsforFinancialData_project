@@ -143,7 +143,7 @@ const Experiment = () => {
   if (finished || userFinishStatus) {
     return (
       <Typography variant={"h5"} align={"center"}>
-        Thank you for participating in this study! <br/><a href={"https://forms.gle/BPSf6UixrkA11gj37"}>Please give your final feedback in this form</a>
+        Thank you for participating in this study! <br/><a href={"https://forms.gle/BB3dhWKPvrqjrKx98"}>Please give your final feedback in this form</a>
       </Typography>
     );
   }

@@ -38,3 +38,9 @@ code {
     filter: brightness(200%);
   }
 }
+
+.tooltip {
+  font-size: 12px;
+  color: #333;
+  pointer-events: none;
+}
