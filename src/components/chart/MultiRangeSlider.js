@@ -3,12 +3,36 @@ import { Range } from 'react-range';
 
 const MultiRangeSlider = ({ data, onChange }) => {
   const [values, setValues] = useState([0, data.length - 1]);
+  const [validStartDate, setValidStartDate] = useState(data[0].date);
+  const [validEndDate, setValidEndDate] = useState(data[data.length - 1].date);
 
   const handleRangeChange = (values) => {
     setValues(values);
-    const selectedStartDate = data[values[0]].date;
-    const selectedEndDate = data[values[1]].date;
-    onChange(new Date(selectedStartDate), new Date(selectedEndDate));
+    
+    let startDate = data[values[0]] ? data[values[0]].date : validStartDate;
+    let endDate = data[values[1]] ? data[values[1]].date : validEndDate;
+
+    // Ensure the selected dates are valid; otherwise, revert to the last valid date
+    if (isNaN(new Date(startDate))) {
+      startDate = validStartDate;
+    } else {
+      setValidStartDate(startDate);  // Update the valid start date
+    }
+
+    if (isNaN(new Date(endDate))) {
+      endDate = validEndDate;
+    } else {
+      setValidEndDate(endDate);  // Update the valid end date
+    }
+
+    onChange(new Date(startDate), new Date(endDate));
+  };
+
+  const formatMonthYear = (date) => {
+    if (!date || isNaN(new Date(date))) {
+      return "Invalid Date";  // This should never be shown because of the above logic
+    }
+    return new Date(date).toLocaleString('default', { month: 'short', year: 'numeric' });
   };
 
   return (
@@ -50,11 +74,13 @@ const MultiRangeSlider = ({ data, onChange }) => {
         )}
       />
       <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-        <span>{new Date(data[values[0]].date).toDateString()}</span>
-        <span>{new Date(data[values[1]].date).toDateString()}</span>
+        <span>{formatMonthYear(validStartDate)}</span>
+        <span>{formatMonthYear(validEndDate)}</span>
       </div>
     </div>
   );
 };
 
 export default MultiRangeSlider;
+
+

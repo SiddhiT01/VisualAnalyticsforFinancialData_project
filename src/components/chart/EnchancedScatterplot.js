@@ -9,15 +9,17 @@ class ScatterPlotWithTimeslider extends Component {
     this.state = {
       selectedXAxis: "sma(50)",
       selectedYAxis: "sma(250)",
-      dateRange: [new Date('2017-01-01'), new Date('2017-12-31')], 
+      dateRange: [new Date('2017-01-01'), new Date('2017-12-31')],
       filteredData: this.props.data.data, // Start with the full dataset
+      lastValidStartDate: new Date('2017-01-01'),
+      lastValidEndDate: new Date('2017-12-31'),
     };
 
     this.xAxisOptions = [
-      { "name": "sma(250)", "startangle": 5.4, "endangle": 4.8, "color": "#9F6F2E", "axis": 'y', "label": "SMA-250" },
-      { "name": "sma(150)", "startangle": 4.8, "endangle": 4.2, "color": "#1E5B56", "axis": 'y', "label": "SMA-150" },
-      { "name": "sma(50)", "startangle": 3.8, "endangle": 3.2, "color": " #9F2E2E", "axis": 'x', "label": "SMA-50" },
-      { "name": "close", "startangle": 3.2, "endangle": 2.6, "color": "#2E8540", "axis": 'x', "label": "price" },
+      { "name": "sma(250)", "startangle": 5.8, "endangle": 5.3, "color": "#9F6F2E", "axis": 'y', "label": "SMA-250" },
+      { "name": "sma(150)", "startangle": 5.3, "endangle": 4.7, "color": "#1E5B56", "axis": 'y', "label": "SMA-150" },
+      { "name": "sma(50)", "startangle": 4.7, "endangle": 4.2, "color": " #9F2E2E", "axis": 'x', "label": "SMA-50" },
+      { "name": "close", "startangle": 2.5, "endangle": 2.0, "color": "#2E8540", "axis": 'x', "label": "price" },
     ];
 
     this.data = props.data.data;
@@ -37,6 +39,16 @@ class ScatterPlotWithTimeslider extends Component {
     }
   }
 
+  // Ensure generateButtonArc function is defined correctly
+  generateButtonArc(circleRadius, startAngle, endAngle, button_name) {
+    return d3.arc()
+      .innerRadius(circleRadius)
+      .outerRadius(circleRadius + ([this.state.selectedXAxis, this.state.selectedYAxis].includes(button_name) ? 40 : 30))
+      .startAngle(startAngle)
+      .endAngle(endAngle)
+      .cornerRadius(5)();
+  }
+
   handleAxisChange = (option, axis) => {
     if (axis === 'x') {
       this.setState({ selectedXAxis: option });
@@ -47,17 +59,25 @@ class ScatterPlotWithTimeslider extends Component {
 
   handleDateRangeChange = (start, end) => {
     const filteredData = this.data.filter(d => new Date(d.date) >= start && new Date(d.date) <= end);
-    this.setState({ dateRange: [start, end], filteredData });
-  };
 
-  generateButtonArc(circleRadius, startAngle, endAngle, button_name) {
-    return d3.arc()
-      .innerRadius(circleRadius)
-      .outerRadius(circleRadius + ([this.state.selectedXAxis, this.state.selectedYAxis].includes(button_name) ? 40 : 30))
-      .startAngle(startAngle)
-      .endAngle(endAngle)
-      .cornerRadius(5)();
-  }
+    if (filteredData.length === 0) {
+      // If no data found, retain the last valid data
+      this.setState((prevState) => ({
+        dateRange: prevState.dateRange,  // Keep the previous date range
+        filteredData: prevState.filteredData,  // Keep the previous valid data
+        lastValidStartDate: prevState.lastValidStartDate,  // Keep the last valid start date
+        lastValidEndDate: prevState.lastValidEndDate  // Keep the last valid end date
+      }));
+    } else {
+      // If data found, update the state and save the current dates as the last valid ones
+      this.setState({
+        dateRange: [start, end],
+        filteredData,
+        lastValidStartDate: start,
+        lastValidEndDate: end
+      });
+    }
+  };
 
   generateRSIArc(circleRadius, rsi) {
     return d3.arc()({
@@ -80,33 +100,33 @@ class ScatterPlotWithTimeslider extends Component {
     const circleX = 250;
     const circleY = 250;
     const elem = this;
-  
+
     d3.select(this.chartRef).selectAll('*').remove();
-  
+
     const x = d3.scaleLinear()
       .domain(d3.extent(filteredData, d => d[selectedXAxis])).nice()
       .range([scatter_x + 25, scatter_width]);
-  
+
     const y = d3.scaleLinear()
       .domain(d3.extent(filteredData, d => d[selectedYAxis])).nice()
       .range([scatter_height, scatter_y + 25]);
-  
+
     this.svg = d3.select(this.chartRef)
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0, 0, 500, 500])
       .attr("style", "max-width: 100%; height: auto;");
-  
+
     const xAxis = this.svg.append("g")
       .attr("transform", `translate(40,${scatter_height + 80})`)
       .call(d3.axisBottom(x).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"));
-  
+
     const yAxis = this.svg.append("g")
       .attr("transform", `translate(${scatter_height - 170},50)`)
       .call(d3.axisLeft(y).ticks(scatter_width / 80))
       .call(g => g.select(".domain").attr("display", "none"));
-  
+
     this.svg.append("defs").append("SVG:clipPath")
       .attr("id", "clip")
       .append("SVG:rect")
@@ -114,11 +134,11 @@ class ScatterPlotWithTimeslider extends Component {
       .attr("height", scatter_height - 60)
       .attr("x", 130)
       .attr("y", 150);
-  
+
     const zoom = d3.zoom()
-      .scaleExtent([1, 10])
+      .scaleExtent([1, 5])
       .on("zoom", zoomed);
-  
+
     this.svg.append("rect")
       .attr("width", scatter_width)
       .attr("height", scatter_height)
@@ -126,10 +146,10 @@ class ScatterPlotWithTimeslider extends Component {
       .style("pointer-events", "all")
       .attr('transform', 'translate(' + scatter_x + ',' + scatter_y + ')')
       .call(zoom);
-  
+
     const scatter = this.svg.append('g')
       .attr("clip-path", "url(#clip)");
-  
+
     const gLine = scatter.append("path")
       .datum(filteredData)
       .attr("fill", "none")
@@ -139,38 +159,34 @@ class ScatterPlotWithTimeslider extends Component {
         .x(d => x(d[selectedXAxis]))
         .y(d => y(d[selectedYAxis]))
       );
-  
-    // Only render RSI arc if `rsi` exists
-    if (filteredData.length > 0 && typeof filteredData[0]['rsi'] !== 'undefined') {
-      const rsi_path = this.svg.append("path")
-        .attr("id", "arc_rsi")
-        .attr('d', this.generateRSIArc(circleRadius, filteredData[0]['rsi']))
-        .attr("transform", "translate(250,250)")
-        .attr('fill', filteredData[0]['rsi'] > 70 ? "red" : (filteredData[0]['rsi'] <= 30 ? "green" : "grey"));
-  
-      scatter.selectAll("circle")
-        .on('mouseover', function (event, d) {
-          if (typeof d['rsi'] !== 'undefined') {
-            rsi_path.transition()
-              .duration(200)
-              .attr('d', elem.generateRSIArc(circleRadius, d.rsi))
-              .attr('fill', d.rsi > 70 ? "red" : (d.rsi <= 30 ? "green" : "grey"));
-          }
-        });
-    }
-  
-    scatter.append("g")
-      .attr("stroke-width", 2)
-      .style("cursor", "pointer")
-      .selectAll("circle")
-      .data(filteredData)
-      .join("circle")
-      .attr("fill", d => d.color)
-      .attr("stroke", d => d.color)
-      .attr("cx", d => x(d[selectedXAxis]))
-      .attr("cy", d => y(d[selectedYAxis]))
-      .attr("r", 3);
-  
+
+      // Code for plotting the RSI arc
+const rsi_path = this.svg.append("path")
+.attr("id", "arc_rsi")
+.attr('d', this.generateRSIArc(circleRadius, filteredData[0]['rsi']))
+.attr("transform", "translate(250,250)")
+.attr('fill', filteredData[0]['rsi'] > 70 ? "red" : (filteredData[0]['rsi'] <= 30 ? "green" : "yellow")); // Initially set the color
+
+// Handling mouseover event for dynamic color change
+const gDot = scatter.append("g")
+.attr("stroke-width", 2)
+.style("cursor", "pointer")
+.selectAll("circle")
+.data(filteredData)
+.join("circle")
+.attr("fill", d => d.color)
+.attr("stroke", d => d.color)
+.attr("cx", d => x(d[selectedXAxis]))
+.attr("cy", d => y(d[selectedYAxis]))
+.attr("r", 3)
+.on('mouseover', function (event, d) {
+  rsi_path.transition()
+    .duration(200)
+    .attr('d', elem.generateRSIArc(circleRadius, d.rsi))
+    .attr('fill', d.rsi > 70 ? "red" : (d.rsi <= 30 ? "green" : "yellow"));  // Set color based on RSI value
+});
+
+
     this.svg.append('circle')
       .attr('cx', circleX)
       .attr('cy', circleY)
@@ -178,10 +194,10 @@ class ScatterPlotWithTimeslider extends Component {
       .attr('fill', 'none')
       .attr('stroke', 'black')
       .attr('stroke-width', 2);
-  
+
     this.svg.selectAll('buttons').data(this.xAxisOptions).enter().append("path")
       .attr("id", d => "button_" + d.name)
-      .attr('d', d => this.generateButtonArc(circleRadius, d.startangle, d.endangle, d.name))
+      .attr('d', d => this.generateButtonArc(circleRadius, d.startangle, d.endangle, d.name)) // Fix here
       .attr("transform", "translate(250,250)")
       .attr('fill', d => d.color)
       .attr('stroke', 'black')
@@ -189,7 +205,7 @@ class ScatterPlotWithTimeslider extends Component {
       .style("cursor", "pointer")
       .attr('class', 'arc-button')
       .on('click', (event, d) => this.handleAxisChange(d.name, d.axis));
-  
+
     const tangentAngles = [[9.10, 30], [8.30, 70]];
     tangentAngles.forEach(function (tangentAngle) {
       const lineEndY = circleX + 220 * Math.cos(tangentAngle[0]);
@@ -203,16 +219,16 @@ class ScatterPlotWithTimeslider extends Component {
         .attr("x2", lineEndX)
         .attr("stroke", "blue")
         .attr("stroke-width", 2);
-  
+
       elem.svg.append("text")
         .attr("class", "x label")
         .attr("text-anchor", "end")
         .attr("x", lineEndX + 10)
         .attr("y", lineEndY - 10)
         .text(tangentAngle[1] + "%");
-  
+
     });
-  
+
     this.svg.append("text")
       .attr("class", "rsi-label")
       .attr("text-anchor", "middle")
@@ -221,7 +237,7 @@ class ScatterPlotWithTimeslider extends Component {
       .attr("fill", "black")
       .attr("font-size", "16px")
       .text("RSI");
-  
+
     this.svg.selectAll('button_labels').data(this.xAxisOptions).enter().append("text").attr('dy', '-.8em').append("textPath")
       .join("textPath")
       .attr("xlink:href", d => "#button_" + d.name)
@@ -232,19 +248,19 @@ class ScatterPlotWithTimeslider extends Component {
       .text(d => d.label)
       .style("cursor", "pointer")
       .on('click', (event, d) => this.handleAxisChange(d.name, d.axis));
-  
+
     function zoomed({ transform }) {
       const zx = transform.rescaleX(x).interpolate(d3.interpolateRound);
       const zy = transform.rescaleY(y).interpolate(d3.interpolateRound);
       gLine.attr("transform", transform).attr("stroke-width", 2 / transform.k);
       xAxis.call(d3.axisBottom(zx));
       yAxis.call(d3.axisLeft(zy));
-      scatter.selectAll("circle")
+      gDot
         .attr('cx', function (d) { return zx(d[elem.state.selectedXAxis]) })
         .attr('cy', function (d) { return zy(d[elem.state.selectedYAxis]) });
     }
   }
-  
+
   render() {
     const timesliderData = this.data.map(d => ({ date: new Date(d.date) }));
     return (
@@ -253,6 +269,8 @@ class ScatterPlotWithTimeslider extends Component {
         <MultiRangeSlider
           data={timesliderData}
           onChange={this.handleDateRangeChange}
+          startDate={this.state.lastValidStartDate}
+          endDate={this.state.lastValidEndDate}
         />
       </div>
     );
@@ -260,3 +278,4 @@ class ScatterPlotWithTimeslider extends Component {
 }
 
 export default ScatterPlotWithTimeslider;
+
