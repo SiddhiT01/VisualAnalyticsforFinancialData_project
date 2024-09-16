@@ -100,4 +100,3 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
 }
 
 export default ScatterplotExp;
-
