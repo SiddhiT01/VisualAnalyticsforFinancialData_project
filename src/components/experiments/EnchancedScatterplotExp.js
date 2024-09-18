@@ -1,3 +1,4 @@
+
 import { Box, Modal } from "@mui/material";
 import EnchancedScatterplot from "../chart/EnchancedScatterplot";
 import TrendRadioPicker from "./TrendRadioPicker";
@@ -100,3 +101,4 @@ const ScatterplotExp = ({ isPaused, onExperimentDataChange }) => {
 }
 
 export default ScatterplotExp;
+

@@ -1,3 +1,5 @@
+// index.js
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
@@ -10,28 +12,33 @@ import Login from "./routes/Login";
 import LoggedInRoute from "./components/auth/LoggedInRoute";
 import Home from "./routes/Home";
 import Sample from "./routes/Sample";
+import SyncedVisualization from "./routes/SyncedVisualization"; // Import the new route component
 
 // Define your routes
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App/>,
+    element: <App />,
     children: [
       {
         path: '/',
-        element: <Home/>,
+        element: <Home />,
       },
       {
         path: '/mockup',
-        element: <Sample/>,
+        element: <Sample />,
       },
       {
         path: '/experiment',
-        element: <LoggedInRoute><Experiment/></LoggedInRoute>,
+        element: <LoggedInRoute><Experiment /></LoggedInRoute>,
       },
       {
         path: '/login',
-        element: <Login/>,
+        element: <Login />,
+      },
+      {
+        path: '/Synced-Visualization', // Add the new route
+        element: <SyncedVisualization />,
       }
     ]
   }

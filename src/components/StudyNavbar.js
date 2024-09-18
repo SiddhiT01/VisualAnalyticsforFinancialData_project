@@ -21,6 +21,11 @@ const StudyNavbar = () => {
               Experiment
             </Typography>
           </Link>
+          <Link to="/synced-visualization">
+            <Typography variant={"h6"} sx={{color:"white", mr:2}}>
+              Synced Visualization
+            </Typography>
+          </Link>
           <Link to="login">
             <Typography variant={"h6"} sx={{color: "white"}}>
               Account

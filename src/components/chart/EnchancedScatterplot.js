@@ -353,3 +353,4 @@ drawScatterPlot() {
 }
 
 export default ScatterPlotWithTimeslider;
+
