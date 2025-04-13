@@ -1,5 +1,5 @@
 # Project Preview
-![Project](projectss.png)
+(projectss.png)
 
 
 ## Create React App
